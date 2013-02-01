@@ -642,7 +642,9 @@ module PredictionIO
     private
 
     def versioned_path(path)
-      "/#{@apiversion}#{path}"
+      # disabled for now
+      # "/#{@apiversion}#{path}"
+      path
     end
 
     def auser_action_item(action, uid, iid, params = {})
