@@ -19,3 +19,5 @@ Usage
 The SDK is fully documented by RDoc. You can access the documentation installed
 by the gem, or run `rdoc` at the root of the repository. The documentation will
 be generated in the `doc` directory.
+
+A copy of the latest documentation is also generously hosted by RubyDoc.info at http://rubydoc.info/github/PredictionIO/PredictionIO-Ruby-SDK/frames.
