@@ -10,14 +10,20 @@ The SDK requires Ruby 1.9.3+ to function properly.
 Installation
 ------------
 
-Simply run `rake gem` followed by `gem install pkg/predictionio-0.1.0.gem`.
+The module is published to RubyGems and can be installed directly by
+
+    gem install predictionio
+
+If you prefer to build and install from source
+
+    gem build predictionio.gemspec
+    gem install predictionio-<version>.gem
 
 
-Usage
------
+Documentation and Usage
+-----------------------
 
-The SDK is fully documented by RDoc. You can access the documentation installed
-by the gem, or run `rdoc` at the root of the repository. The documentation will
-be generated in the `doc` directory.
+The latest [documentation](http://rubydoc.info/github/PredictionIO/PredictionIO-Ruby-SDK/frames)
+is generously hosted by RubyDoc.info.
 
-A copy of the latest documentation is also generously hosted by RubyDoc.info at http://rubydoc.info/github/PredictionIO/PredictionIO-Ruby-SDK/frames.
+A local copy of the documentation will also be installed by the gem.
