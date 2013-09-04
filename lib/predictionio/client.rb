@@ -103,6 +103,21 @@ module PredictionIO
   #     rescue ItemRecNotFoundError => e
   #       # graceful error handling
   #     end
+  #
+  # === Retrieving Top N Similar Items for an Item
+  #     # PredictionIO call to get similar items
+  #     response = client.aget_itemsim_top_n("barengine", "fooitem", 10)
+  #
+  #     #
+  #     # work you need to do for the page (rendering, db queries, etc)
+  #     #
+  #
+  #     begin
+  #       result = client.get_itemsim_top_n(response)
+  #       # display results, store results, or your other work...
+  #     rescue ItemSimNotFoundError => e
+  #       # graceful error handling
+  #     end
 
   class Client
 
