@@ -89,4 +89,15 @@ class TestPredictionIO < MiniTest::Unit::TestCase
     assert(iids.include?("bar"))
     assert_equal(iids.length, 5)
   end
+
+  def test_itemsim
+    client = PredictionIO::Client.new(APPKEY, APITHREADS, APIURL)
+    iids = client.get_itemsim_top_n("test", "218", 5)
+    assert(iids.include?("itemsim"))
+    assert(iids.include?("218"))
+    assert(iids.include?("1"))
+    assert(iids.include?("foo"))
+    assert(iids.include?("bar"))
+    assert_equal(iids.length, 5)
+  end
 end

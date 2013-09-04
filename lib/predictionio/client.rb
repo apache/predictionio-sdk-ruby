@@ -45,7 +45,7 @@ module PredictionIO
   #
   # == Installation
   # The easiest way is to use RubyGems:
-  #     gem install predictionio-0.5.0.gem
+  #     gem install predictionio-0.6.0.gem
   #
   # == Synopsis
   # The recommended usage of the SDK is to fire asynchronous requests as early as you can in your code,
@@ -103,6 +103,21 @@ module PredictionIO
   #     rescue ItemRecNotFoundError => e
   #       # graceful error handling
   #     end
+  #
+  # === Retrieving Top N Similar Items for an Item
+  #     # PredictionIO call to get similar items
+  #     response = client.aget_itemsim_top_n("barengine", "fooitem", 10)
+  #
+  #     #
+  #     # work you need to do for the page (rendering, db queries, etc)
+  #     #
+  #
+  #     begin
+  #       result = client.get_itemsim_top_n(response)
+  #       # display results, store results, or your other work...
+  #     rescue ItemSimNotFoundError => e
+  #       # graceful error handling
+  #     end
 
   class Client
 
@@ -138,6 +153,9 @@ module PredictionIO
 
     # Raised when ItemRec results cannot be found for a user after a synchronous API call.
     class ItemRecNotFoundError < StandardError; end
+
+    # Raised when ItemSim results cannot be found for an item after a synchronous API call.
+    class ItemSimNotFoundError < StandardError; end
 
     # Raised when an user-to-item action is not created after a synchronous API call.
     class U2IActionNotCreatedError < StandardError; end
@@ -508,6 +526,64 @@ module PredictionIO
           raise ItemRecNotFoundError, response
         end
         raise ItemRecNotFoundError, msg
+      end
+    end
+
+    # :category: Asynchronous Methods
+    # Asynchronously request to get the top n similar items for an item from an ItemSim engine and return a PredictionIO::AsyncResponse object immediately.
+    #
+    # Corresponding REST API method: GET /engines/itemsim/:engine/topn
+    #
+    # See also #get_itemsim_top_n.
+    def aget_itemsim_top_n(engine, iid, n, params = {})
+      rparams = Hash.new
+      rparams["pio_appkey"] = @appkey
+      rparams["pio_iid"] = iid
+      rparams["pio_n"] = n
+      if params["pio_itypes"] != nil &&
+          params["pio_itypes"].kind_of?(Array) &&
+          params["pio_itypes"].length > 0 then
+        rparams["pio_itypes"] = params["pio_itypes"].join(",")
+      else
+        rparams["pio_itypes"] = params["pio_itypes"]
+      end
+      if params["pio_latitude"] != nil && params["pio_longitude"] != nil then
+        rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
+      end
+      if params["pio_within"] != nil then
+        rparams["pio_within"] = params["pio_within"]
+      end
+      if params["pio_unit"] != nil then
+        rparams["pio_unit"] = params["pio_unit"]
+      end
+      @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/engines/itemsim/#{engine}/topn.#{@apiformat}"), rparams))
+    end
+
+    # :category: Synchronous Methods
+    # Synchronously request to get the top n similar items for an item from an ItemSim engine and block until a response is received.
+    #
+    # See #aget_itemsim_top_n for a description of special argument handling.
+    #
+    # call-seq:
+    # aget_itemsim_top_n(engine, iid, n, params = {})
+    # aget_itemsim_top_n(async_response)
+    def get_itemsim_top_n(*args)
+      iid_or_res = args[0]
+      if iid_or_res.is_a?(PredictionIO::AsyncResponse) then
+        response = iid_or_res.get
+      else
+        response = aget_itemsim_top_n(*args).get
+      end
+      if response.is_a?(Net::HTTPOK) then
+        res = JSON.parse(response.body)
+        res["pio_iids"]
+      else
+        begin
+          msg = response.body
+        rescue Exception
+          raise ItemSimNotFoundError, response
+        end
+        raise ItemSimNotFoundError, msg
       end
     end
 
