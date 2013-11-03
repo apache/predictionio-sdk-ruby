@@ -196,7 +196,7 @@ module PredictionIO
       rparams = params
       rparams["pio_appkey"] = @appkey
       rparams["pio_uid"] = uid
-      if params["pio_latitude"] != nil && params["pio_longitude"] != nil then
+      if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
 
@@ -213,13 +213,13 @@ module PredictionIO
     # create_user(async_response)
     def create_user(*args)
       uid_or_res = args[0]
-      if uid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if uid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = uid_or_res.get
       else
         uid = uid_or_res
         response = acreate_user(*args).get
       end
-      unless response.is_a?(Net::HTTPCreated) then
+      unless response.is_a?(Net::HTTPCreated)
         begin
           msg = response.body
         rescue Exception
@@ -258,14 +258,14 @@ module PredictionIO
     # get_user(uid)
     # get_user(async_response)
     def get_user(uid_or_res)
-      if uid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if uid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = uid_or_res.get
       else
         response = aget_user(uid_or_res).get
       end
-      if response.is_a?(Net::HTTPOK) then
+      if response.is_a?(Net::HTTPOK)
         res = JSON.parse(response.body)
-        if res["pio_latlng"] != nil then
+        if res["pio_latlng"]
           latlng = res["pio_latlng"]
           res["pio_latitude"] = latlng[0]
           res["pio_longitude"] = latlng[1]
@@ -302,12 +302,12 @@ module PredictionIO
     # delete_user(uid)
     # delete_user(async_response)
     def delete_user(uid_or_res)
-      if uid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if uid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = uid_or_res.get
       else
         response = adelete_user(uid_or_res).get
       end
-      unless response.is_a?(Net::HTTPOK) then
+      unless response.is_a?(Net::HTTPOK)
         begin
           msg = response.body
         rescue Exception
@@ -332,15 +332,11 @@ module PredictionIO
       rescue Exception
         rparams["pio_itypes"] = itypes
       end
-      if params["pio_latitude"] != nil && params["pio_longitude"] != nil then
+      if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
-      if params["pio_startT"] != nil then
-        rparams["pio_startT"] = ((params["pio_startT"].to_r) * 1000).round(0).to_s
-      end
-      if params["pio_endT"] != nil then
-        rparams["pio_endT"] = ((params["pio_endT"].to_r) * 1000).round(0).to_s
-      end
+      rparams["pio_startT"] = ((params["pio_startT"].to_r) * 1000).round(0).to_s if params["pio_startT"]
+      rparams["pio_endT"]   = ((params["pio_endT"].to_r) * 1000).round(0).to_s if params["pio_endT"]
 
       @http.apost(PredictionIO::AsyncRequest.new(versioned_path("/items.#{@apiformat}"), rparams))
     end
@@ -355,12 +351,12 @@ module PredictionIO
     # create_item(async_response)
     def create_item(*args)
       iid_or_res = args[0]
-      if iid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if iid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = iid_or_res.get
       else
         response = acreate_item(*args).get
       end
-      unless response.is_a?(Net::HTTPCreated) then
+      unless response.is_a?(Net::HTTPCreated)
         begin
           msg = response.body
         rescue Exception
@@ -399,23 +395,23 @@ module PredictionIO
     # get_item(iid)
     # get_item(async_response)
     def get_item(iid_or_res)
-      if iid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if iid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = iid_or_res.get
       else
         response = aget_item(iid_or_res).get
       end
-      if response.is_a?(Net::HTTPOK) then
+      if response.is_a?(Net::HTTPOK)
         res = JSON.parse(response.body)
-        if res["pio_latlng"] != nil then
+        if res["pio_latlng"]
           latlng = res["pio_latlng"]
           res["pio_latitude"] = latlng[0]
           res["pio_longitude"] = latlng[1]
         end
-        if res["pio_startT"] != nil then
+        if res["pio_startT"]
           startT = Rational(res["pio_startT"], 1000)
           res["pio_startT"] = Time.at(startT)
         end
-        if res["pio_endT"] != nil then
+        if res["pio_endT"]
           endT = Rational(res["pio_endT"], 1000)
           res["pio_endT"] = Time.at(endT)
         end
@@ -451,12 +447,12 @@ module PredictionIO
     # delete_item(iid)
     # delete_item(async_response)
     def delete_item(iid_or_res)
-      if iid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if iid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = iid_or_res.get
       else
         response = adelete_item(iid_or_res).get
       end
-      unless response.is_a?(Net::HTTPOK) then
+      unless response.is_a?(Net::HTTPOK)
         begin
           msg = response.body
         rescue Exception
@@ -482,22 +478,16 @@ module PredictionIO
       rparams["pio_appkey"] = @appkey
       rparams["pio_uid"] = @apiuid
       rparams["pio_n"] = n
-      if params["pio_itypes"] != nil &&
-          params["pio_itypes"].kind_of?(Array) &&
-          params["pio_itypes"].length > 0 then
+      if params["pio_itypes"] && params["pio_itypes"].kind_of?(Array) && params["pio_itypes"].any?
         rparams["pio_itypes"] = params["pio_itypes"].join(",")
       else
         rparams["pio_itypes"] = params["pio_itypes"]
       end
-      if params["pio_latitude"] != nil && params["pio_longitude"] != nil then
+      if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
-      if params["pio_within"] != nil then
-        rparams["pio_within"] = params["pio_within"]
-      end
-      if params["pio_unit"] != nil then
-        rparams["pio_unit"] = params["pio_unit"]
-      end
+      rparams["pio_within"] = params["pio_within"] if params["pio_within"]
+      rparams["pio_unit"] = params["pio_unit"] if params["pio_unit"]
       @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/engines/itemrec/#{engine}/topn.#{@apiformat}"), rparams))
     end
 
@@ -511,12 +501,12 @@ module PredictionIO
     # aget_itemrec_top_n(async_response)
     def get_itemrec_top_n(*args)
       uid_or_res = args[0]
-      if uid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if uid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = uid_or_res.get
       else
         response = aget_itemrec_top_n(*args).get
       end
-      if response.is_a?(Net::HTTPOK) then
+      if response.is_a?(Net::HTTPOK)
         res = JSON.parse(response.body)
         res["pio_iids"]
       else
@@ -540,22 +530,16 @@ module PredictionIO
       rparams["pio_appkey"] = @appkey
       rparams["pio_iid"] = iid
       rparams["pio_n"] = n
-      if params["pio_itypes"] != nil &&
-          params["pio_itypes"].kind_of?(Array) &&
-          params["pio_itypes"].length > 0 then
+      if params["pio_itypes"] && params["pio_itypes"].kind_of?(Array) && params["pio_itypes"].any?
         rparams["pio_itypes"] = params["pio_itypes"].join(",")
       else
         rparams["pio_itypes"] = params["pio_itypes"]
       end
-      if params["pio_latitude"] != nil && params["pio_longitude"] != nil then
+      if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
-      if params["pio_within"] != nil then
-        rparams["pio_within"] = params["pio_within"]
-      end
-      if params["pio_unit"] != nil then
-        rparams["pio_unit"] = params["pio_unit"]
-      end
+      rparams["pio_within"] = params["pio_within"] if params["pio_within"]
+      rparams["pio_unit"] = params["pio_unit"] if params["pio_unit"]
       @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/engines/itemsim/#{engine}/topn.#{@apiformat}"), rparams))
     end
 
@@ -569,12 +553,12 @@ module PredictionIO
     # aget_itemsim_top_n(async_response)
     def get_itemsim_top_n(*args)
       iid_or_res = args[0]
-      if iid_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if iid_or_res.is_a?(PredictionIO::AsyncResponse)
         response = iid_or_res.get
       else
         response = aget_itemsim_top_n(*args).get
       end
-      if response.is_a?(Net::HTTPOK) then
+      if response.is_a?(Net::HTTPOK)
         res = JSON.parse(response.body)
         res["pio_iids"]
       else
@@ -599,10 +583,8 @@ module PredictionIO
       rparams["pio_action"] = action
       rparams["pio_uid"] = @apiuid
       rparams["pio_iid"] = iid
-      if params["pio_t"] != nil then
-        rparams["pio_t"] = ((params["pio_t"].to_r) * 1000).round(0).to_s
-      end
-      if params["pio_latitude"] != nil && params["pio_longitude"] != nil then
+      rparams["pio_t"] = ((params["pio_t"].to_r) * 1000).round(0).to_s if params["pio_t"]
+      if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
       @http.apost(PredictionIO::AsyncRequest.new(versioned_path("/actions/u2i.#{@apiformat}"), rparams))
@@ -618,12 +600,12 @@ module PredictionIO
     # record_action_on_item(async_response)
     def record_action_on_item(*args)
       action_or_res = args[0]
-      if action_or_res.is_a?(PredictionIO::AsyncResponse) then
+      if action_or_res.is_a?(PredictionIO::AsyncResponse)
         response = action_or_res.get
       else
         response = arecord_action_on_item(*args).get
       end
-      unless response.is_a?(Net::HTTPCreated) then
+      unless response.is_a?(Net::HTTPCreated)
         begin
           msg = response.body
         rescue Exception

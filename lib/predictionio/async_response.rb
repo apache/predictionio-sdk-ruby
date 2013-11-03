@@ -11,9 +11,7 @@ module PredictionIO
     def initialize(request, response = nil)
       @request = request
       @response = Queue.new
-      if response != nil then
-        set(response)
-      end
+      set(response) if response
     end
 
     # Save a Net::HTTPResponse instance to the current instance.
