@@ -48,5 +48,5 @@ Talk To Us
 ----------
 
 We love to hear from you. If you want to work on something or have
-questions / complaints please reach out to us by at
+questions / feedback, please reach out to us at
 https://groups.google.com/forum/#!forum/predictionio-dev
