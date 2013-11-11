@@ -45,7 +45,7 @@ module PredictionIO
   #
   # == Installation
   # The easiest way is to use RubyGems:
-  #     gem install predictionio-0.6.0.gem
+  #     gem install predictionio
   #
   # == Synopsis
   # The recommended usage of the SDK is to fire asynchronous requests as early as you can in your code,
@@ -53,7 +53,7 @@ module PredictionIO
   #
   # === Instantiate PredictionIO Client
   #     # Include the PredictionIO SDK
-  #     require "PredictionIO"
+  #     require "predictionio"
   #
   #     client = PredictionIO::Client.new(<appkey>)
   #
