@@ -10,6 +10,11 @@ from the community that are within the guidelines set forth below.
 Bug Fixes and New Features
 --------------------------
 
+As your first step, please visit and read the [Contributor License Agreement]
+(http://prediction.io/cla). All contributors are required to sign this
+agreement.
+
+
 Before starting to write code, look for existing [tickets]
 (https://predictionio.atlassian.net/browse/SDKRUBY) or [create one]
 (https://predictionio.atlassian.net/secure/CreateIssue!default.jspa) 
