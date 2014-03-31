@@ -32,4 +32,11 @@ describe PredictionIO do
       expect(response).to_not raise_error
     end
   end
+  describe 'U2I API' do
+    it 'record_action_on_item should record an action' do
+      client.identify("foo")
+      response = client.record_action_on_item("view", "bar")
+      expect(response).to_not raise_error
+    end
+  end
 end
