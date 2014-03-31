@@ -1,6 +1,8 @@
+require 'coveralls'
 require 'json'
 require 'webmock/rspec'
 
+Coveralls.wear!
 WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
