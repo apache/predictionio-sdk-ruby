@@ -39,4 +39,19 @@ describe PredictionIO do
       expect(response).to_not raise_error
     end
   end
+
+  describe 'Item Recommendation API' do
+    it 'provides recommendations to a user without attributes' do
+      client.identify("foo")
+      response = client.get_itemrec_top_n("itemrec-engine", 10)
+      expect(response).to eq(["x", "y", "z"])
+    end
+  end
+
+  describe 'Item Similarity API' do
+    it 'provides similarities to an item without attributes' do
+      response = client.get_itemsim_top_n("itemsim-engine", "bar", 10)
+      expect(response).to eq(["x", "y", "z"])
+    end
+  end
 end

@@ -33,5 +33,15 @@ RSpec.configure do |config|
     stub_request(:post, "http://fakeapi.com:8000/actions/u2i.json").
       with(:body => {"pio_action" => "view", "pio_appkey" => "foobar", "pio_iid" => "bar", "pio_uid" => "foo"}).
       to_return(:status => 201, :body => "", :headers => {})
+
+    # Item Recommendation API
+    stub_request(:get, "http://fakeapi.com:8000/engines/itemrec/itemrec-engine/topn.json").
+      with(:query => hash_including("pio_appkey" => "foobar", "pio_n" => "10", "pio_uid" => "foo")).
+      to_return(:status => 200, :body => JSON.generate({"pio_iids" => ["x", "y", "z"]}), :headers => {})
+
+    # Item Similarity API
+    stub_request(:get, "http://fakeapi.com:8000/engines/itemsim/itemsim-engine/topn.json").
+      with(:query => hash_including("pio_appkey" => "foobar", "pio_n" => "10", "pio_iid" => "bar")).
+      to_return(:status => 200, :body => JSON.generate({"pio_iids" => ["x", "y", "z"]}), :headers => {})
   end
 end
