@@ -18,6 +18,7 @@ describe PredictionIO do
       expect(response).to_not raise_error
     end
   end
+
   describe 'Items API' do
     it 'create_item should create a item' do
       response = client.create_item("bar", ["dead", "beef"])
@@ -32,6 +33,7 @@ describe PredictionIO do
       expect(response).to_not raise_error
     end
   end
+
   describe 'U2I API' do
     it 'record_action_on_item should record an action' do
       client.identify("foo")
@@ -46,12 +48,27 @@ describe PredictionIO do
       response = client.get_itemrec_top_n("itemrec-engine", 10)
       expect(response).to eq(["x", "y", "z"])
     end
+    it 'provides recommendations to a user with attributes' do
+      client.identify("foo")
+      response = client.get_itemrec_top_n("itemrec-engine", 10, 'pio_attributes' => 'name')
+      expect(response).to eq([
+        {"pio_iid" => "x", "name" => "a"},
+        {"pio_iid" => "y", "name" => "b"},
+        {"pio_iid" => "z", "name" => "c"}])
+    end
   end
 
   describe 'Item Similarity API' do
     it 'provides similarities to an item without attributes' do
       response = client.get_itemsim_top_n("itemsim-engine", "bar", 10)
       expect(response).to eq(["x", "y", "z"])
+    end
+    it 'provides similarities to an item with attributes' do
+      response = client.get_itemsim_top_n("itemsim-engine", "bar", 10, 'pio_attributes' => 'name')
+      expect(response).to eq([
+        {"pio_iid" => "x", "name" => "a"},
+        {"pio_iid" => "y", "name" => "b"},
+        {"pio_iid" => "z", "name" => "c"}])
     end
   end
 end

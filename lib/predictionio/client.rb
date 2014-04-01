@@ -474,16 +474,25 @@ module PredictionIO
       rparams["pio_appkey"] = @appkey
       rparams["pio_uid"] = @apiuid
       rparams["pio_n"] = n
-      if params["pio_itypes"] && params["pio_itypes"].kind_of?(Array) && params["pio_itypes"].any?
-        rparams["pio_itypes"] = params["pio_itypes"].join(",")
-      else
-        rparams["pio_itypes"] = params["pio_itypes"]
+      if params["pio_itypes"]
+        if params["pio_itypes"].kind_of?(Array) && params["pio_itypes"].any?
+          rparams["pio_itypes"] = params["pio_itypes"].join(",")
+        else
+          rparams["pio_itypes"] = params["pio_itypes"]
+        end
       end
       if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
       rparams["pio_within"] = params["pio_within"] if params["pio_within"]
       rparams["pio_unit"] = params["pio_unit"] if params["pio_unit"]
+      if params["pio_attributes"]
+        if params["pio_attributes"].kind_of?(Array) && params["pio_attributes"].any?
+          rparams["pio_attributes"] = params["pio_attributes"].join(",")
+        else
+          rparams["pio_attributes"] = params["pio_attributes"]
+        end
+      end
       @http.aget(PredictionIO::AsyncRequest.new("/engines/itemrec/#{engine}/topn.#{@apiformat}", rparams))
     end
 
@@ -498,13 +507,20 @@ module PredictionIO
     def get_itemrec_top_n(*args)
       uid_or_res = args[0]
       if uid_or_res.is_a?(PredictionIO::AsyncResponse)
-        response = uid_or_res.get
+        response = uid_or_res
       else
-        response = aget_itemrec_top_n(*args).get
+        response = aget_itemrec_top_n(*args)
       end
-      if response.is_a?(Net::HTTPOK)
-        res = JSON.parse(response.body)
-        res["pio_iids"]
+      http_response = response.get
+      if http_response.is_a?(Net::HTTPOK)
+        res = JSON.parse(http_response.body)
+        if response.request.params.has_key?('pio_attributes')
+          attributes = response.request.params['pio_attributes'].split(',')
+          list_of_attribute_values = attributes.map { |attrib| res[attrib] }
+          res["pio_iids"].zip(*list_of_attribute_values).map { |v| Hash[(['pio_iid'] + attributes).zip(v)] }
+        else
+          res["pio_iids"]
+        end
       else
         begin
           msg = response.body
@@ -526,16 +542,25 @@ module PredictionIO
       rparams["pio_appkey"] = @appkey
       rparams["pio_iid"] = iid
       rparams["pio_n"] = n
-      if params["pio_itypes"] && params["pio_itypes"].kind_of?(Array) && params["pio_itypes"].any?
-        rparams["pio_itypes"] = params["pio_itypes"].join(",")
-      else
-        rparams["pio_itypes"] = params["pio_itypes"]
+      if params["pio_itypes"]
+        if params["pio_itypes"].kind_of?(Array) && params["pio_itypes"].any?
+          rparams["pio_itypes"] = params["pio_itypes"].join(",")
+        else
+          rparams["pio_itypes"] = params["pio_itypes"]
+        end
       end
       if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
       rparams["pio_within"] = params["pio_within"] if params["pio_within"]
       rparams["pio_unit"] = params["pio_unit"] if params["pio_unit"]
+      if params["pio_attributes"]
+        if params["pio_attributes"].kind_of?(Array) && params["pio_attributes"].any?
+          rparams["pio_attributes"] = params["pio_attributes"].join(",")
+        else
+          rparams["pio_attributes"] = params["pio_attributes"]
+        end
+      end
       @http.aget(PredictionIO::AsyncRequest.new("/engines/itemsim/#{engine}/topn.#{@apiformat}", rparams))
     end
 
@@ -548,15 +573,22 @@ module PredictionIO
     # aget_itemsim_top_n(engine, iid, n, params = {})
     # aget_itemsim_top_n(async_response)
     def get_itemsim_top_n(*args)
-      iid_or_res = args[0]
-      if iid_or_res.is_a?(PredictionIO::AsyncResponse)
-        response = iid_or_res.get
+      uid_or_res = args[0]
+      if uid_or_res.is_a?(PredictionIO::AsyncResponse)
+        response = uid_or_res
       else
-        response = aget_itemsim_top_n(*args).get
+        response = aget_itemsim_top_n(*args)
       end
-      if response.is_a?(Net::HTTPOK)
-        res = JSON.parse(response.body)
-        res["pio_iids"]
+      http_response = response.get
+      if http_response.is_a?(Net::HTTPOK)
+        res = JSON.parse(http_response.body)
+        if response.request.params.has_key?('pio_attributes')
+          attributes = response.request.params['pio_attributes'].split(',')
+          list_of_attribute_values = attributes.map { |attrib| res[attrib] }
+          res["pio_iids"].zip(*list_of_attribute_values).map { |v| Hash[(['pio_iid'] + attributes).zip(v)] }
+        else
+          res["pio_iids"]
+        end
       else
         begin
           msg = response.body

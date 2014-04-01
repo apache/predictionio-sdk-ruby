@@ -39,9 +39,17 @@ RSpec.configure do |config|
       with(:query => hash_including("pio_appkey" => "foobar", "pio_n" => "10", "pio_uid" => "foo")).
       to_return(:status => 200, :body => JSON.generate({"pio_iids" => ["x", "y", "z"]}), :headers => {})
 
+    stub_request(:get, "http://fakeapi.com:8000/engines/itemrec/itemrec-engine/topn.json").
+      with(:query => hash_including("pio_appkey" => "foobar", "pio_n" => "10", "pio_uid" => "foo", 'pio_attributes' => 'name')).
+      to_return(:status => 200, :body => JSON.generate({"pio_iids" => ["x", "y", "z"], "name" => ["a", "b", "c"]}), :headers => {})
+
     # Item Similarity API
     stub_request(:get, "http://fakeapi.com:8000/engines/itemsim/itemsim-engine/topn.json").
       with(:query => hash_including("pio_appkey" => "foobar", "pio_n" => "10", "pio_iid" => "bar")).
       to_return(:status => 200, :body => JSON.generate({"pio_iids" => ["x", "y", "z"]}), :headers => {})
+
+    stub_request(:get, "http://fakeapi.com:8000/engines/itemsim/itemsim-engine/topn.json").
+      with(:query => hash_including("pio_appkey" => "foobar", "pio_n" => "10", "pio_iid" => "bar", 'pio_attributes' => 'name')).
+      to_return(:status => 200, :body => JSON.generate({"pio_iids" => ["x", "y", "z"], 'name' => ['a', 'b', 'c']}), :headers => {})
   end
 end
