@@ -1,3 +1,5 @@
+coverage/
 doc/
 pkg/
 *.gem
+Gemfile.lock

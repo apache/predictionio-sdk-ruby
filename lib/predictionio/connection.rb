@@ -14,7 +14,7 @@ module PredictionIO
 
     # Spawns a number of threads with persistent HTTP connection to the specified URI.
     # Sets a default timeout of 5 seconds.
-    def initialize(uri, threads = 1, timeout = 5)
+    def initialize(uri, threads = 1, timeout = 60)
       @packages = Queue.new
       @counter_lock = Mutex.new
       @connections = 0
