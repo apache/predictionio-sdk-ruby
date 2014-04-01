@@ -596,7 +596,7 @@ module PredictionIO
     # See also #arecord_action_on_item.
     #
     # call-seq:
-    # record_action_on_item(action, uid, iid, params = {})
+    # record_action_on_item(action, iid, params = {})
     # record_action_on_item(async_response)
     def record_action_on_item(*args)
       action_or_res = args[0]
