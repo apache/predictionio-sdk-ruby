@@ -49,7 +49,6 @@ gem install predictionio-<version>.gem
 Documentation and Usage
 =======================
 
-The latest [documentation](http://rubydoc.info/github/PredictionIO/PredictionIO-Ruby-SDK/frames)
-is generously hosted by RubyDoc.info.
+An online version of the documentation is [viewable here](http://docs.prediction.io/ruby/api/PredictionIO.html).
 
 A local copy of the documentation will also be installed by the gem.
