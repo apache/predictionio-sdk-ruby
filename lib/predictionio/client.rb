@@ -124,9 +124,6 @@ module PredictionIO
     # Appkey can be changed on-the-fly after creation of the client.
     attr_accessor :appkey
 
-    # API version can be changed on-the-fly after creation of the client.
-    attr_accessor :apiversion
-
     # Only JSON is currently supported as API response format.
     attr_accessor :apiformat
 
@@ -164,11 +161,10 @@ module PredictionIO
     # - API entry point at http://localhost:8000
     # - API return data format of json
     # - 10 concurrent HTTP(S) connections
-    def initialize(appkey, threads = 10, apiurl = "http://localhost:8000", apiversion = "")
+    def initialize(appkey, threads = 10, apiurl = "http://localhost:8000", thread_timeout = 60)
       @appkey = appkey
-      @apiversion = apiversion
       @apiformat = "json"
-      @http = PredictionIO::Connection.new(URI(apiurl), threads)
+      @http = PredictionIO::Connection.new(URI(apiurl), threads, thread_timeout)
     end
 
     # Returns the number of pending requests within the current client.
@@ -200,7 +196,7 @@ module PredictionIO
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
 
-      @http.apost(PredictionIO::AsyncRequest.new(versioned_path("/users.#{@apiformat}"), rparams))
+      @http.apost(PredictionIO::AsyncRequest.new("/users.#{@apiformat}", rparams))
     end
 
     # :category: Synchronous Methods
@@ -240,7 +236,7 @@ module PredictionIO
     #
     # See also #get_user.
     def aget_user(uid)
-      @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/users/#{uid}.#{@apiformat}"),
+      @http.aget(PredictionIO::AsyncRequest.new("/users/#{uid}.#{@apiformat}",
                                                 "pio_appkey" => @appkey,
                                                 "pio_uid" => uid))
     end
@@ -288,7 +284,7 @@ module PredictionIO
     #
     # See also #delete_user.
     def adelete_user(uid)
-      @http.adelete(PredictionIO::AsyncRequest.new(versioned_path("/users/#{uid}.#{@apiformat}"),
+      @http.adelete(PredictionIO::AsyncRequest.new("/users/#{uid}.#{@apiformat}",
                                                    "pio_appkey" => @appkey,
                                                    "pio_uid" => uid))
     end
@@ -338,7 +334,7 @@ module PredictionIO
       rparams["pio_startT"] = ((params["pio_startT"].to_r) * 1000).round(0).to_s if params["pio_startT"]
       rparams["pio_endT"]   = ((params["pio_endT"].to_r) * 1000).round(0).to_s if params["pio_endT"]
 
-      @http.apost(PredictionIO::AsyncRequest.new(versioned_path("/items.#{@apiformat}"), rparams))
+      @http.apost(PredictionIO::AsyncRequest.new("/items.#{@apiformat}", rparams))
     end
 
     # :category: Synchronous Methods
@@ -377,7 +373,7 @@ module PredictionIO
     #
     # See also #get_item.
     def aget_item(iid)
-      @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/items/#{iid}.#{@apiformat}"),
+      @http.aget(PredictionIO::AsyncRequest.new("/items/#{iid}.#{@apiformat}",
                                                 "pio_appkey" => @appkey,
                                                 "pio_iid" => iid))
     end
@@ -433,7 +429,7 @@ module PredictionIO
     #
     # See also #delete_item.
     def adelete_item(iid)
-      @http.adelete(PredictionIO::AsyncRequest.new(versioned_path("/items/#{iid}.#{@apiformat}"),
+      @http.adelete(PredictionIO::AsyncRequest.new("/items/#{iid}.#{@apiformat}",
                                                    "pio_appkey" => @appkey,
                                                    "pio_iid" => iid))
     end
@@ -488,7 +484,7 @@ module PredictionIO
       end
       rparams["pio_within"] = params["pio_within"] if params["pio_within"]
       rparams["pio_unit"] = params["pio_unit"] if params["pio_unit"]
-      @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/engines/itemrec/#{engine}/topn.#{@apiformat}"), rparams))
+      @http.aget(PredictionIO::AsyncRequest.new("/engines/itemrec/#{engine}/topn.#{@apiformat}", rparams))
     end
 
     # :category: Synchronous Methods
@@ -540,7 +536,7 @@ module PredictionIO
       end
       rparams["pio_within"] = params["pio_within"] if params["pio_within"]
       rparams["pio_unit"] = params["pio_unit"] if params["pio_unit"]
-      @http.aget(PredictionIO::AsyncRequest.new(versioned_path("/engines/itemsim/#{engine}/topn.#{@apiformat}"), rparams))
+      @http.aget(PredictionIO::AsyncRequest.new("/engines/itemsim/#{engine}/topn.#{@apiformat}", rparams))
     end
 
     # :category: Synchronous Methods
@@ -587,7 +583,7 @@ module PredictionIO
       if params["pio_latitude"] && params["pio_longitude"]
         rparams["pio_latlng"] = "#{params["pio_latitude"]},#{params["pio_longitude"]}"
       end
-      @http.apost(PredictionIO::AsyncRequest.new(versioned_path("/actions/u2i.#{@apiformat}"), rparams))
+      @http.apost(PredictionIO::AsyncRequest.new("/actions/u2i.#{@apiformat}", rparams))
     end
 
     # :category: Synchronous Methods
@@ -613,15 +609,6 @@ module PredictionIO
         end
         raise U2IActionNotCreatedError, msg
       end
-    end
-
-    # :nodoc: all
-    private
-
-    def versioned_path(path)
-      # disabled for now
-      # "/#{@apiversion}#{path}"
-      path
     end
   end
 end
