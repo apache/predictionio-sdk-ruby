@@ -58,6 +58,22 @@ describe PredictionIO do
     end
   end
 
+  describe 'Item Rank API' do
+    it 'provides ranking to a user without attributes' do
+      client.identify("foo")
+      response = client.get_itemrank_ranked("itemrank-engine", ["y", "z", "x"])
+      expect(response).to eq(["x", "y", "z"])
+    end
+    it 'provides ranking to a user with attributes' do
+      client.identify("foo")
+      response = client.get_itemrank_ranked("itemrank-engine", ["y", "x", "z"], 'pio_attributes' => 'name')
+      expect(response).to eq([
+        {"pio_iid" => "x", "name" => "a"},
+        {"pio_iid" => "y", "name" => "b"},
+        {"pio_iid" => "z", "name" => "c"}])
+    end
+  end
+
   describe 'Item Similarity API' do
     it 'provides similarities to an item without attributes' do
       response = client.get_itemsim_top_n("itemsim-engine", "bar", 10)
