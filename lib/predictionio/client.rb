@@ -151,6 +151,9 @@ module PredictionIO
     # Raised when ItemRec results cannot be found for a user after a synchronous API call.
     class ItemRecNotFoundError < StandardError; end
 
+    # Raised when ItemRank results cannot be found for a user after a synchronous API call.
+    class ItemRankNotFoundError < StandardError; end
+
     # Raised when ItemSim results cannot be found for an item after a synchronous API call.
     class ItemSimNotFoundError < StandardError; end
 
@@ -158,9 +161,9 @@ module PredictionIO
     class U2IActionNotCreatedError < StandardError; end
 
     # Create a new PredictionIO client with default:
-    # - API entry point at http://localhost:8000
-    # - API return data format of json
-    # - 10 concurrent HTTP(S) connections
+    # - 10 concurrent HTTP(S) connections (threads)
+    # - API entry point at http://localhost:8000 (apiurl)
+    # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
     def initialize(appkey, threads = 10, apiurl = "http://localhost:8000", thread_timeout = 60)
       @appkey = appkey
       @apiformat = "json"
@@ -528,6 +531,66 @@ module PredictionIO
           raise ItemRecNotFoundError, response
         end
         raise ItemRecNotFoundError, msg
+      end
+    end
+
+    # :category: Asynchronous Methods
+    # Asynchronously request to get the ranking for a user from an ItemRank engine and return a PredictionIO::AsyncResponse object immediately.
+    #
+    # Corresponding REST API method: GET /engines/itemrank/:engine/ranked
+    #
+    # See also #get_itemrank_ranked.
+    def aget_itemrank_ranked(engine, iids, params = {})
+      rparams = Hash.new
+      rparams["pio_appkey"] = @appkey
+      rparams["pio_uid"] = @apiuid
+      if iids.kind_of?(Array) && iids.any?
+        rparams["pio_iids"] = iids.join(",")
+      else
+        rparams["pio_iids"] = iids
+      end
+      if params["pio_attributes"]
+        if params["pio_attributes"].kind_of?(Array) && params["pio_attributes"].any?
+          rparams["pio_attributes"] = params["pio_attributes"].join(",")
+        else
+          rparams["pio_attributes"] = params["pio_attributes"]
+        end
+      end
+      @http.aget(PredictionIO::AsyncRequest.new("/engines/itemrank/#{engine}/ranked.#{@apiformat}", rparams))
+    end
+
+    # :category: Synchronous Methods
+    # Synchronously request to get the ranking for a user from an ItemRank engine and block until a response is received.
+    #
+    # See #aget_itemrank_ranked for a description of special argument handling.
+    #
+    # call-seq:
+    # aget_itemrank_ranked(engine, n, params = {})
+    # aget_itemrank_ranked(async_response)
+    def get_itemrank_ranked(*args)
+      uid_or_res = args[0]
+      if uid_or_res.is_a?(PredictionIO::AsyncResponse)
+        response = uid_or_res
+      else
+        response = aget_itemrank_ranked(*args)
+      end
+      http_response = response.get
+      if http_response.is_a?(Net::HTTPOK)
+        res = JSON.parse(http_response.body)
+        if response.request.params.has_key?('pio_attributes')
+          attributes = response.request.params['pio_attributes'].split(',')
+          list_of_attribute_values = attributes.map { |attrib| res[attrib] }
+          res["pio_iids"].zip(*list_of_attribute_values).map { |v| Hash[(['pio_iid'] + attributes).zip(v)] }
+        else
+          res["pio_iids"]
+        end
+      else
+        begin
+          msg = response.body
+        rescue Exception
+          raise ItemRankNotFoundError, response
+        end
+        raise ItemRankNotFoundError, msg
       end
     end
 
