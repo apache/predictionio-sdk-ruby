@@ -161,9 +161,9 @@ module PredictionIO
     class U2IActionNotCreatedError < StandardError; end
 
     # Create a new PredictionIO client with default:
-    # - API entry point at http://localhost:8000
-    # - API return data format of json
-    # - 10 concurrent HTTP(S) connections
+    # - 10 concurrent HTTP(S) connections (threads)
+    # - API entry point at http://localhost:8000 (apiurl)
+    # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
     def initialize(appkey, threads = 10, apiurl = "http://localhost:8000", thread_timeout = 60)
       @appkey = appkey
       @apiformat = "json"

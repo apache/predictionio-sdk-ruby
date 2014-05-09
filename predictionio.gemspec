@@ -6,7 +6,7 @@ PredictionIO is a prediction server for building smart applications. This gem
 provides convenient access of the PredictionIO API to Ruby programmers so that
 they can focus on their application logic.
   EOF
-  s.version = "0.7.1.beta1"
+  s.version = "0.7.1"
   s.author = "The PredictionIO Team"
   s.email = "support@prediction.io"
   s.homepage = "http://prediction.io"
