@@ -34,29 +34,34 @@ module PredictionIO
                   request = package[:request]
                   response = package[:response]
                   case package[:method]
-                  when "get"
+                  when 'get'
                     http_req = Net::HTTP::Get.new("#{uri.path}#{request.qpath}")
                     begin
                       response.set(http.request(http_req))
                     rescue Exception => details
                       response.set(details)
                     end
-                  when "post"
-                    http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}")
-                    http_req.set_form_data(request.params)
+                  when 'post'
+                    if request.params.is_a?(Hash)
+                      http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}")
+                      http_req.set_form_data(request.params)
+                    else
+                      http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}", initheader = {'Content-Type' => 'application/json'})
+                      http_req.body = request.params
+                    end
                     begin
                       response.set(http.request(http_req))
                     rescue Exception => details
                       response.set(details)
                     end
-                  when "delete"
+                  when 'delete'
                     http_req = Net::HTTP::Delete.new("#{uri.path}#{request.qpath}")
                     begin
                       response.set(http.request(http_req))
                     rescue Exception => details
                       response.set(details)
                     end
-                  when "exit"
+                  when 'exit'
                     @counter_lock.synchronize do
                       @connections -= 1
                     end
@@ -96,17 +101,17 @@ module PredictionIO
 
     # Shortcut to create an asynchronous GET request with the response object returned.
     def aget(areq)
-      request("get", areq)
+      request('get', areq)
     end
 
     # Shortcut to create an asynchronous POST request with the response object returned.
     def apost(areq)
-      request("post", areq)
+      request('post', areq)
     end
 
     # Shortcut to create an asynchronous DELETE request with the response object returned.
     def adelete(areq)
-      request("delete", areq)
+      request('delete', areq)
     end
   end
 end
