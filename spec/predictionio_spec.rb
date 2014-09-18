@@ -32,6 +32,14 @@ describe PredictionIO do
         'greet', 'foobar', 'barbaz', 'dead' => 'beef')
       expect(response).to_not raise_error
     end
+    it 'delete_user should delete a user' do
+      response = event_client.delete_user('foobar')
+      expect(response).to_not raise_error
+    end
+    it 'delete_item should delete an item' do
+      response = event_client.delete_item('foobar')
+      expect(response).to_not raise_error
+    end
   end
 
   describe 'Engine Client' do

@@ -16,27 +16,11 @@ module PredictionIO
   # to these methods as Hash'es. For a complete reference, please visit
   # http://prediction.io.
   #
-  # == High-performance Asynchronous Backend
-  #
-  # All REST request methods come in both synchronous and asynchronous flavors.
-  # Both flavors accept the same set of arguments. In addition, all synchronous
-  # request methods can instead accept a PredictionIO::AsyncResponse object
-  # generated from asynchronous request methods as its first argument. In this
-  # case, the method will block until a response is received from it.
-  #
-  # Any network reconnection and request retry is automatically handled in the
-  # background. Exceptions will be thrown after a request times out to avoid
-  # infinite blocking.
-  #
-  # == Installation
-  # The easiest way is to use RubyGems:
-  #     gem install predictionio
-  #
   # == Synopsis
   # In most cases, using synchronous methods. If you have a special performance
   # requirement, you may want to take a look at asynchronous methods.
   #
-  # === Instantiate PredictionIO Engine Client
+  # === Instantiate an EngineClient
   #     # Include the PredictionIO SDK
   #     require 'predictionio'
   #
@@ -96,23 +80,20 @@ module PredictionIO
       else
         response = send(sync_m, *args).get
       end
-      if response.is_a?(Net::HTTPOK)
-        return JSON.parse(response.body)
+      return JSON.parse(response.body) if response.is_a?(Net::HTTPOK)
+      begin
+        msg = response.body
+      rescue
+        raise response
+      end
+      if response.is_a?(Net::HTTPBadRequest)
+        fail BadRequestError, msg
+      elsif response.is_a?(Net::HTTPNotFound)
+        fail NotFoundError, msg
+      elsif response.is_a?(Net::HTTPServerError)
+        fail ServerError, msg
       else
-        begin
-          msg = response.body
-        rescue
-          raise response
-        end
-        if response.is_a?(Net::HTTPBadRequest)
-          fail BadRequestError, msg
-        elsif response.is_a?(Net::HTTPNotFound)
-          fail NotFoundError, msg
-        elsif response.is_a?(Net::HTTPServerError)
-          fail ServerError, msg
-        else
-          fail msg
-        end
+        fail msg
       end
     end
 
@@ -120,7 +101,8 @@ module PredictionIO
 
     # :category: Asynchronous Methods
     # Asynchronously sends a query and returns PredictionIO::AsyncResponse
-    # object immediately.
+    # object immediately. The query should be a Ruby data structure that can be
+    # converted to a JSON object.
     #
     # Corresponding REST API method: POST /
     #

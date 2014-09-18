@@ -7,14 +7,8 @@
 require 'predictionio/async_request'
 require 'predictionio/async_response'
 require 'predictionio/connection'
+require 'date'
 
-# The PredictionIO module contains classes that provide convenient access of the
-# PredictionIO output API over HTTP/HTTPS.
-#
-# To create an app and perform predictions, please download the PredictionIO
-# suite from http://prediction.io.
-#
-# Most functionality is provided by the PredictionIO::Client class.
 module PredictionIO
   # This class contains methods that interface with the PredictionIO Event
   # Server via the PredictionIO Event API using REST requests.
@@ -43,7 +37,7 @@ module PredictionIO
   # In most cases, using synchronous methods. If you have a special performance
   # requirement, you may want to take a look at asynchronous methods.
   #
-  # === Instantiate PredictionIO Event Client
+  # === Instantiate an EventClient
   #     # Include the PredictionIO SDK
   #     require 'predictionio'
   #
@@ -120,14 +114,13 @@ module PredictionIO
       else
         response = send(sync_m, *args).get
       end
-      unless response.is_a?(Net::HTTPCreated)
-        begin
-          msg = response.body
-        rescue
-          raise NotCreatedError, response
-        end
-        fail NotCreatedError, msg
+      return response if response.is_a?(Net::HTTPCreated)
+      begin
+        msg = response.body
+      rescue
+        raise NotCreatedError, response
       end
+      fail NotCreatedError, msg
     end
 
     public
@@ -141,6 +134,7 @@ module PredictionIO
     # See also #create_event.
     def acreate_event(event, entity_type, entity_id, optional = {})
       h = optional
+      h.key?('eventTime') || h['eventTime'] = DateTime.now.to_s
       h['appId'] = @app_id
       h['event'] = event
       h['entityType'] = entity_type
@@ -194,16 +188,16 @@ module PredictionIO
     # Asynchronously request to unset properties of a user and return a
     # PredictionIO::AsyncResponse object immediately.
     #
+    # properties must be a non-empty Hash.
+    #
     # Corresponding REST API method: POST /events.json
     #
     # See also #unset_user.
-    def aunset_user(uid, properties = {})
+    def aunset_user(uid, properties)
       if properties.empty?
-        h = {}
-      else
-        h = { 'properties' => properties }
+        fail ArgumentError 'properties cannot be empty when event is $unset'
       end
-      acreate_event('$unset', 'pio_user', uid, h)
+      acreate_event('$unset', 'pio_user', uid, 'properties' => properties)
     end
 
     # :category: Synchronous Methods
@@ -217,6 +211,30 @@ module PredictionIO
     # unset_user(async_response)
     def unset_user(*args)
       sync_events(:aunset_user, *args)
+    end
+
+    # :category: Asynchronous Methods
+    # Asynchronously request to delete a user and return a
+    # PredictionIO::AsyncResponse object immediately.
+    #
+    # Corresponding REST API method: POST /events.json
+    #
+    # See also #delete_user.
+    def adelete_user(uid)
+      acreate_event('$delete', 'pio_user', uid)
+    end
+
+    # :category: Synchronous Methods
+    # Synchronously request to delete a user and block until a response is
+    # received.
+    #
+    # See also #adelete_user.
+    #
+    # call-seq:
+    # delete_user(uid)
+    # delete_user(async_response)
+    def delete_user(*args)
+      sync_events(:adelete_user, *args)
     end
 
     # :category: Asynchronous Methods
@@ -252,16 +270,16 @@ module PredictionIO
     # Asynchronously request to unset properties of an item and return a
     # PredictionIO::AsyncResponse object immediately.
     #
+    # properties must be a non-empty Hash.
+    #
     # Corresponding REST API method: POST /events.json
     #
     # See also #unset_item.
-    def aunset_item(iid, properties = {})
+    def aunset_item(iid, properties)
       if properties.empty?
-        h = {}
-      else
-        h = { 'properties' => properties }
+        fail ArgumentError 'properties cannot be empty when event is $unset'
       end
-      acreate_event('$unset', 'pio_item', iid, h)
+      acreate_event('$unset', 'pio_item', iid, 'properties' => properties)
     end
 
     # :category: Synchronous Methods
@@ -275,6 +293,30 @@ module PredictionIO
     # unset_item(async_response)
     def unset_item(*args)
       sync_events(:aunset_item, *args)
+    end
+
+    # :category: Asynchronous Methods
+    # Asynchronously request to delete an item and return a
+    # PredictionIO::AsyncResponse object immediately.
+    #
+    # Corresponding REST API method: POST /events.json
+    #
+    # See also #delete_item.
+    def adelete_item(uid)
+      acreate_event('$delete', 'pio_item', uid)
+    end
+
+    # :category: Synchronous Methods
+    # Synchronously request to delete an item and block until a response is
+    # received.
+    #
+    # See also #adelete_item.
+    #
+    # call-seq:
+    # delete_item(uid)
+    # delete_item(async_response)
+    def delete_item(*args)
+      sync_events(:adelete_item, *args)
     end
 
     # :category: Asynchronous Methods

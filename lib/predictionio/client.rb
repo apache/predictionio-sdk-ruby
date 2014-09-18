@@ -11,13 +11,7 @@ require 'predictionio/async_request'
 require 'predictionio/async_response'
 require 'predictionio/connection'
 
-# The PredictionIO module contains classes that provide convenient access of the PredictionIO output API over HTTP/HTTPS.
-#
-# To create an app and perform predictions, please download the PredictionIO suite from http://prediction.io.
-#
-# Most functionality is provided by the PredictionIO::Client class.
 module PredictionIO
-
   # This class contains methods that access PredictionIO via REST requests.
   #
   # Many REST request methods support optional arguments.
