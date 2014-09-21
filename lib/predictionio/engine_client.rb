@@ -108,7 +108,8 @@ module PredictionIO
     #
     # See also #send_query.
     def asend_query(query)
-      @http.apost(PredictionIO::AsyncRequest.new('/', query.to_json))
+      @http.apost(PredictionIO::AsyncRequest.new('/queries.json',
+                                                 query.to_json))
     end
 
     # :category: Synchronous Methods
