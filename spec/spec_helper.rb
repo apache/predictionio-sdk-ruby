@@ -47,7 +47,7 @@ RSpec.configure do |config|
       .to_return(status: 201, body: JSON.generate(eventId: 'deadbeef07'))
 
     # Engine Instance
-    stub_request(:post, 'http://fakeapi.com:8000/')
+    stub_request(:post, 'http://fakeapi.com:8000/queries.json')
       .with(body: { uid: 'foobar' })
       .to_return(status: 200, body: JSON.generate(iids: %w(dead beef)),
                  headers: {})
