@@ -162,10 +162,8 @@ module PredictionIO
     # Corresponding REST API method: POST /events.json
     #
     # See also #set_user.
-    def aset_user(uid, properties = {}, optional = {})
-      h = optional
-      properties.empty? || h['properties'] = properties
-      acreate_event('$set', 'pio_user', uid, h)
+    def aset_user(uid, optional = {})
+      acreate_event('$set', 'pio_user', uid, optional)
     end
 
     # :category: Synchronous Methods
@@ -175,7 +173,7 @@ module PredictionIO
     # See also #aset_user.
     #
     # call-seq:
-    # set_user(uid, properties = {}, optional = {})
+    # set_user(uid, optional = {})
     # set_user(async_response)
     def set_user(*args)
       sync_events(:aset_user, *args)
@@ -190,13 +188,12 @@ module PredictionIO
     # Corresponding REST API method: POST /events.json
     #
     # See also #unset_user.
-    def aunset_user(uid, properties, optional = {})
-      if properties.empty?
-        fail ArgumentError 'properties cannot be empty when event is $unset'
-      end
-      h = optional
-      h['properties'] = properties
-      acreate_event('$unset', 'pio_user', uid, h)
+    def aunset_user(uid, optional)
+      optional.key?('properties') ||
+        fail(ArgumentError, 'properties must be present when event is $unset')
+      optional['properties'].empty? &&
+        fail(ArgumentError, 'properties cannot be empty when event is $unset')
+      acreate_event('$unset', 'pio_user', uid, optional)
     end
 
     # :category: Synchronous Methods
@@ -206,7 +203,7 @@ module PredictionIO
     # See also #aunset_user.
     #
     # call-seq:
-    # unset_user(uid, properties, optional = {})
+    # unset_user(uid, optional)
     # unset_user(async_response)
     def unset_user(*args)
       sync_events(:aunset_user, *args)
@@ -243,10 +240,8 @@ module PredictionIO
     # Corresponding REST API method: POST /events.json
     #
     # See also #set_item.
-    def aset_item(iid, properties = {}, optional = {})
-      h = optional
-      properties.empty? || h['properties'] = properties
-      acreate_event('$set', 'pio_item', iid, h)
+    def aset_item(iid, optional = {})
+      acreate_event('$set', 'pio_item', iid, optional)
     end
 
     # :category: Synchronous Methods
@@ -271,13 +266,12 @@ module PredictionIO
     # Corresponding REST API method: POST /events.json
     #
     # See also #unset_item.
-    def aunset_item(iid, properties, optional = {})
-      if properties.empty?
-        fail ArgumentError 'properties cannot be empty when event is $unset'
-      end
-      h = optional
-      h['properties'] = properties
-      acreate_event('$unset', 'pio_item', iid, h)
+    def aunset_item(iid, optional)
+      optional.key?('properties') ||
+        fail(ArgumentError, 'properties must be present when event is $unset')
+      optional['properties'].empty? &&
+        fail(ArgumentError, 'properties cannot be empty when event is $unset')
+      acreate_event('$unset', 'pio_item', iid, optional)
     end
 
     # :category: Synchronous Methods
@@ -324,13 +318,10 @@ module PredictionIO
     # Corresponding REST API method: POST /events.json
     #
     # See also #record_user_action_on_item.
-    def arecord_user_action_on_item(action, uid, iid, properties = {},
-                                    optional = {})
-      h = optional
-      properties.empty? || h['properties'] = properties
-      h['targetEntityType'] = 'pio_item'
-      h['targetEntityId'] = iid
-      acreate_event(action, 'pio_user', uid, h)
+    def arecord_user_action_on_item(action, uid, iid, optional = {})
+      optional['targetEntityType'] = 'pio_item'
+      optional['targetEntityId'] = iid
+      acreate_event(action, 'pio_user', uid, optional)
     end
 
     # :category: Synchronous Methods
@@ -340,8 +331,7 @@ module PredictionIO
     # See also #arecord_user_action_on_item.
     #
     # call-seq:
-    # record_user_action_on_item(action, uid, iid, properties = {},
-    #                            optional = {})
+    # record_user_action_on_item(action, uid, iid, optional = {})
     # record_user_action_on_item(async_response)
     def record_user_action_on_item(*args)
       sync_events(:arecord_user_action_on_item, *args)

@@ -16,7 +16,8 @@ describe PredictionIO do
       expect(response).to_not raise_error
     end
     it 'unset_user should unset user properties' do
-      response = event_client.unset_user('foobar', 'bar' => 'baz')
+      response = event_client.unset_user('foobar',
+                                         'properties' => { 'bar' => 'baz' })
       expect(response).to_not raise_error
     end
     it 'set_item should set item properties' do
@@ -24,12 +25,13 @@ describe PredictionIO do
       expect(response).to_not raise_error
     end
     it 'unset_item should unset item properties' do
-      response = event_client.unset_item('foobar', 'bar' => 'baz')
+      response = event_client.unset_item('foobar',
+                                         'properties' => { 'bar' => 'baz' })
       expect(response).to_not raise_error
     end
     it 'record_user_action_on_item should record a U2I action' do
       response = event_client.record_user_action_on_item(
-        'greet', 'foobar', 'barbaz', 'dead' => 'beef')
+        'greet', 'foobar', 'barbaz', 'properties' => { 'dead' => 'beef' })
       expect(response).to_not raise_error
     end
     it 'delete_user should delete a user' do
