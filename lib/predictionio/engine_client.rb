@@ -51,7 +51,7 @@ module PredictionIO
     # - 1 concurrent HTTP(S) connections (threads)
     # - API entry point at http://localhost:7070 (apiurl)
     # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
-    def initialize(threads = 1, apiurl = 'http://localhost:8000',
+    def initialize(apiurl = 'http://localhost:8000', threads = 1,
                    thread_timeout = 60)
       @http = PredictionIO::Connection.new(URI(apiurl), threads, thread_timeout)
     end
