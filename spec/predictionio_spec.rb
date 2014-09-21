@@ -2,8 +2,8 @@ require 'predictionio'
 require 'spec_helper'
 
 client = PredictionIO::Client.new('foobar', 10, 'http://fakeapi.com:8000')
-event_client = PredictionIO::EventClient.new(1, 10, 'http://fakeapi.com:8000')
-engine_client = PredictionIO::EngineClient.new(10, 'http://fakeapi.com:8000')
+event_client = PredictionIO::EventClient.new(1, 'http://fakeapi.com:8000', 10)
+engine_client = PredictionIO::EngineClient.new('http://fakeapi.com:8000', 10)
 
 describe PredictionIO do
   describe 'Events API' do
