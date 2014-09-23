@@ -11,13 +11,7 @@ require 'predictionio/async_request'
 require 'predictionio/async_response'
 require 'predictionio/connection'
 
-# The PredictionIO module contains classes that provide convenient access of the PredictionIO output API over HTTP/HTTPS.
-#
-# To create an app and perform predictions, please download the PredictionIO suite from http://prediction.io.
-#
-# Most functionality is provided by the PredictionIO::Client class.
 module PredictionIO
-
   # This class contains methods that access PredictionIO via REST requests.
   #
   # Many REST request methods support optional arguments.
@@ -505,8 +499,8 @@ module PredictionIO
     # See #aget_itemrec_top_n for a description of special argument handling.
     #
     # call-seq:
-    # aget_itemrec_top_n(engine, n, params = {})
-    # aget_itemrec_top_n(async_response)
+    # get_itemrec_top_n(engine, n, params = {})
+    # get_itemrec_top_n(async_response)
     def get_itemrec_top_n(*args)
       uid_or_res = args[0]
       if uid_or_res.is_a?(PredictionIO::AsyncResponse)
@@ -565,8 +559,8 @@ module PredictionIO
     # See #aget_itemrank_ranked for a description of special argument handling.
     #
     # call-seq:
-    # aget_itemrank_ranked(engine, n, params = {})
-    # aget_itemrank_ranked(async_response)
+    # get_itemrank_ranked(engine, n, params = {})
+    # get_itemrank_ranked(async_response)
     def get_itemrank_ranked(*args)
       uid_or_res = args[0]
       if uid_or_res.is_a?(PredictionIO::AsyncResponse)
@@ -633,8 +627,8 @@ module PredictionIO
     # See #aget_itemsim_top_n for a description of special argument handling.
     #
     # call-seq:
-    # aget_itemsim_top_n(engine, iid, n, params = {})
-    # aget_itemsim_top_n(async_response)
+    # get_itemsim_top_n(engine, iid, n, params = {})
+    # get_itemsim_top_n(async_response)
     def get_itemsim_top_n(*args)
       uid_or_res = args[0]
       if uid_or_res.is_a?(PredictionIO::AsyncResponse)

@@ -1,5 +1,6 @@
 module PredictionIO
-  # This class contains the URI path and query parameters that is consumed by PredictionIO::Connection for asynchronous HTTP requests.
+  # This class contains the URI path and query parameters that is consumed by
+  # PredictionIO::Connection for asynchronous HTTP requests.
   class AsyncRequest
 
     # The path portion of the request URI.
@@ -8,7 +9,8 @@ module PredictionIO
     # Query parameters, or form data.
     attr_reader :params
 
-    # Populates the package with request URI path, and optionally query parameters or form data.
+    # Populates the package with request URI path, and optionally query
+    # parameters or form data.
     def initialize(path, params = {})
       @params = params
       @path = path
