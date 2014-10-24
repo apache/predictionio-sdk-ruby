@@ -86,7 +86,7 @@ module PredictionIO
     # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
     def initialize(app_id, apiurl = 'http://localhost:7070', threads = 1,
                    thread_timeout = 60)
-      @app_id = app_id
+      @app_id = app_id.to_i
       @http = PredictionIO::Connection.new(URI(apiurl), threads, thread_timeout)
     end
 
