@@ -49,7 +49,7 @@ module PredictionIO
 
     # Create a new PredictionIO Event Client with defaults:
     # - 1 concurrent HTTP(S) connections (threads)
-    # - API entry point at http://localhost:7070 (apiurl)
+    # - API entry point at http://localhost:8000 (apiurl)
     # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
     def initialize(apiurl = 'http://localhost:8000', threads = 1,
                    thread_timeout = 60)
