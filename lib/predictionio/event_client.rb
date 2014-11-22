@@ -41,7 +41,7 @@ module PredictionIO
   #     # Include the PredictionIO SDK
   #     require 'predictionio'
   #
-  #     client = PredictionIO::EventClient.new(<app_id>)
+  #     client = PredictionIO::EventClient.new(<access_key>)
   #
   # === Import a User Record from Your App (with asynchronous/non-blocking
   #     requests)
@@ -84,9 +84,9 @@ module PredictionIO
     # - 1 concurrent HTTP(S) connections (threads)
     # - API entry point at http://localhost:7070 (apiurl)
     # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
-    def initialize(app_id, apiurl = 'http://localhost:7070', threads = 1,
+    def initialize(access_key, apiurl = 'http://localhost:7070', threads = 1,
                    thread_timeout = 60)
-      @app_id = app_id
+      @access_key = access_key
       @http = PredictionIO::Connection.new(URI(apiurl), threads, thread_timeout)
     end
 
@@ -135,11 +135,12 @@ module PredictionIO
     def acreate_event(event, entity_type, entity_id, optional = {})
       h = optional
       h.key?('eventTime') || h['eventTime'] = DateTime.now.to_s
-      h['appId'] = @app_id
       h['event'] = event
       h['entityType'] = entity_type
       h['entityId'] = entity_id
-      @http.apost(PredictionIO::AsyncRequest.new('/events.json', h.to_json))
+      @http.apost(PredictionIO::AsyncRequest.new(
+        "/events.json?accessKey=#{@access_key}", h.to_json
+      ))
     end
 
     # :category: Synchronous Methods
