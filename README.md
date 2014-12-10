@@ -37,7 +37,7 @@ gem 'predictionio', '0.8.3'
 
 # Documentation and Usage
 
-An online version of the documentation is [viewable here](http://docs.prediction.io/ruby/api/).
+An online version of the documentation is [viewable here](http://docs.prediction.io/ruby/api/PredictionIO.html).
 
 # Version
 
