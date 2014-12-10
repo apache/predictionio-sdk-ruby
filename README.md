@@ -32,7 +32,7 @@ gem install predictionio
 Or using [Bundler](http://bundler.io/) with:
 
 ```
-gem 'predictionio'
+gem 'predictionio', '0.8.3'
 ```
 
 # Documentation and Usage
