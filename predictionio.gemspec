@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 PredictionIO is a prediction server for building smart applications. This gem
 provides convenient access of the PredictionIO API to Ruby programmers so that
 they can focus on application logic.
-  EOF
+EOF
   s.version = PredictionIO::VERSION
   s.licenses = ['Apache-2.0']
   s.author = 'The PredictionIO Team'
