@@ -41,4 +41,4 @@ An online version of the documentation is [viewable here](http://docs.prediction
 
 # Version
 
-The gem version **must** match the PredictionIO version. i.e. gem version 0.8.3 works with PredictionIO 0.8.3.
+The gem version **must** match the PredictionIO version. i.e. gem version 0.8.3 **only** works with PredictionIO 0.8.3.
