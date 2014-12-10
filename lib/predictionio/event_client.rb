@@ -72,7 +72,7 @@ module PredictionIO
   #     begin
   #       result = client.record_user_action_on_item('rate', 'foouser',
   #                                                  'baritem',
-  #                                                  'pio_rating' => 4)
+  #                                                  'rating' => 4)
   #     rescue PredictionIO::EventClient::NotCreatedError => e
   #       ...
   #     end
@@ -84,8 +84,7 @@ module PredictionIO
     # - 1 concurrent HTTP(S) connections (threads)
     # - API entry point at http://localhost:7070 (apiurl)
     # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
-    def initialize(access_key, apiurl = 'http://localhost:7070', threads = 1,
-                   thread_timeout = 60)
+    def initialize(access_key, apiurl = 'http://localhost:7070', threads = 1, thread_timeout = 60)
       @access_key = access_key
       @http = PredictionIO::Connection.new(URI(apiurl), threads, thread_timeout)
     end
@@ -164,7 +163,7 @@ module PredictionIO
     #
     # See also #set_user.
     def aset_user(uid, optional = {})
-      acreate_event('$set', 'pio_user', uid, optional)
+      acreate_event('$set', 'user', uid, optional)
     end
 
     # :category: Synchronous Methods
@@ -194,7 +193,7 @@ module PredictionIO
         fail(ArgumentError, 'properties must be present when event is $unset')
       optional['properties'].empty? &&
         fail(ArgumentError, 'properties cannot be empty when event is $unset')
-      acreate_event('$unset', 'pio_user', uid, optional)
+      acreate_event('$unset', 'user', uid, optional)
     end
 
     # :category: Synchronous Methods
@@ -218,7 +217,7 @@ module PredictionIO
     #
     # See also #delete_user.
     def adelete_user(uid)
-      acreate_event('$delete', 'pio_user', uid)
+      acreate_event('$delete', 'user', uid)
     end
 
     # :category: Synchronous Methods
@@ -242,7 +241,7 @@ module PredictionIO
     #
     # See also #set_item.
     def aset_item(iid, optional = {})
-      acreate_event('$set', 'pio_item', iid, optional)
+      acreate_event('$set', 'item', iid, optional)
     end
 
     # :category: Synchronous Methods
@@ -272,7 +271,7 @@ module PredictionIO
         fail(ArgumentError, 'properties must be present when event is $unset')
       optional['properties'].empty? &&
         fail(ArgumentError, 'properties cannot be empty when event is $unset')
-      acreate_event('$unset', 'pio_item', iid, optional)
+      acreate_event('$unset', 'item', iid, optional)
     end
 
     # :category: Synchronous Methods
@@ -296,7 +295,7 @@ module PredictionIO
     #
     # See also #delete_item.
     def adelete_item(uid)
-      acreate_event('$delete', 'pio_item', uid)
+      acreate_event('$delete', 'item', uid)
     end
 
     # :category: Synchronous Methods
@@ -320,9 +319,9 @@ module PredictionIO
     #
     # See also #record_user_action_on_item.
     def arecord_user_action_on_item(action, uid, iid, optional = {})
-      optional['targetEntityType'] = 'pio_item'
+      optional['targetEntityType'] = 'item'
       optional['targetEntityId'] = iid
-      acreate_event(action, 'pio_user', uid, optional)
+      acreate_event(action, 'user', uid, optional)
     end
 
     # :category: Synchronous Methods

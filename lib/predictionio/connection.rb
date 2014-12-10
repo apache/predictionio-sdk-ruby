@@ -22,8 +22,7 @@ module PredictionIO
       threads.times do
         Thread.new do
           begin
-            Net::HTTP.start(uri.host, uri.port,
-                            :use_ssl => uri.scheme == 'https') do |http|
+            Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
               @counter_lock.synchronize do
                 @connections += 1
               end
@@ -46,7 +45,7 @@ module PredictionIO
                       http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}")
                       http_req.set_form_data(request.params)
                     else
-                      http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}", initheader = {'Content-Type' => 'application/json'})
+                      http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}", initheader = { 'Content-Type' => 'application/json' })
                       http_req.body = request.params
                     end
                     begin
@@ -93,9 +92,7 @@ module PredictionIO
     # Create an asynchronous request and response package, put it in the pending queue, and return the response object.
     def request(method, request)
       response = AsyncResponse.new(request)
-      @packages.push(:method => method,
-                     :request => request,
-                     :response => response)
+      @packages.push(method: method, request: request, response: response)
       response
     end
 
