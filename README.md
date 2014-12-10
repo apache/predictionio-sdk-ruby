@@ -1,5 +1,4 @@
-PredictionIO Ruby SDK
-=====================
+# PredictionIO Ruby SDK
 
 [![Build Status](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK.svg?branch=develop)](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK)
 [![Code Climate](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK.png)](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK)
@@ -10,47 +9,36 @@ and retrieve personalized predictions for them.
 
 The SDK requires Ruby 1.9.3+ to function properly.
 
+# Support
 
-Support
-=======
-
-
-Forum
------
+## Forum
 
 https://groups.google.com/group/predictionio-user
 
-
-Issue Tracker
--------------
+## Issue Tracker
 
 https://predictionio.atlassian.net
 
 If you are unsure whether a behavior is an issue, bringing it up in the forum is highly encouraged.
 
+# Installation
 
-Installation
-============
-
-The module is published to RubyGems and can be installed directly by
+The module is published to [RubyGems](http://rubygems.org/gems/predictionio) and can be installed directly by:
 
 ```sh
 gem install predictionio
 ```
 
-If you prefer to build and install from source
+Or using [Bundler](http://bundler.io/) with:
 
-```sh
-gem build predictionio.gemspec
-gem install predictionio-<version>.gem
+```
+gem 'predictionio', '0.8.3'
 ```
 
-
-Documentation and Usage
-=======================
-
-[Ruby quickstart guide](http://docs.prediction.io/current/tutorials/quickstart-ruby.html)
+# Documentation and Usage
 
 An online version of the documentation is [viewable here](http://docs.prediction.io/ruby/api/PredictionIO.html).
 
-A local copy of the documentation will also be installed by the gem.
+# Version
+
+The gem version **must** match the PredictionIO version, i.e. gem version 0.8.3 **only** works with PredictionIO 0.8.3.

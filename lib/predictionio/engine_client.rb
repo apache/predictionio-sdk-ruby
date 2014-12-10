@@ -51,8 +51,7 @@ module PredictionIO
     # - 1 concurrent HTTP(S) connections (threads)
     # - API entry point at http://localhost:8000 (apiurl)
     # - a 60-second timeout for each HTTP(S) connection (thread_timeout)
-    def initialize(apiurl = 'http://localhost:8000', threads = 1,
-                   thread_timeout = 60)
+    def initialize(apiurl = 'http://localhost:8000', threads = 1, thread_timeout = 60)
       @http = PredictionIO::Connection.new(URI(apiurl), threads, thread_timeout)
     end
 
@@ -108,8 +107,7 @@ module PredictionIO
     #
     # See also #send_query.
     def asend_query(query)
-      @http.apost(PredictionIO::AsyncRequest.new('/queries.json',
-                                                 query.to_json))
+      @http.apost(PredictionIO::AsyncRequest.new('/queries.json', query.to_json))
     end
 
     # :category: Synchronous Methods
