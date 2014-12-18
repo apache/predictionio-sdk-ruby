@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK.svg?branch=develop)](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK)
 [![Code Climate](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK.png)](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK)
 [![Dependency Status](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK.svg)](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK)
+[![Gem Version](https://badge.fury.io/rb/predictionio.svg)](http://badge.fury.io/rb/predictionio)
 
 The Ruby SDK provides a convenient API to quickly record your users' behavior
 and retrieve personalized predictions for them.
