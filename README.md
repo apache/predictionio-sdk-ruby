@@ -49,5 +49,4 @@ our [Contributor Agreement](http://prediction.io/cla) before submitting a pull r
 
 ## License
 
-[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). Please sign
-our [Contributor Agreement](http://prediction.io/cla) before submitting a pull request.
+[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
