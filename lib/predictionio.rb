@@ -1,5 +1,10 @@
+require 'predictionio/async_request'
+require 'predictionio/async_response'
+require 'predictionio/connection'
 require 'predictionio/event_client'
 require 'predictionio/engine_client'
+require 'predictionio/file_exporter'
+require 'predictionio/version'
 
 # The PredictionIO module contains classes that provide convenient access of
 # PredictionIO Event API and Engine Instance over HTTP/HTTPS.
