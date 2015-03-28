@@ -79,6 +79,12 @@ client.create_event(
 )
 ```
 
+### Async
+
+To use an async request simply change `create_event` to `acreate_event`. The
+asynchronous method wont though an error though so it's best to start with the
+synchronous one.
+
 ## Query PredictionIO
 
 Connect to the PredictionIO Engine with:
@@ -91,19 +97,12 @@ ENV['PIO_ENGINE_URL'] = 'http://localhost:8000'
 client = PredictionIO::EngineClient.new(ENV['PIO_ENGINE_URL'])
 ```
 
-### Query for a Recomendation
+### Get a Recomendation
 
 ```ruby
 # Get 5 recommendations for items similar to 10, 20, 30.
 response = client.send_query(items: [10, 20, 30], num: 5)
 ```
-
-### Async
-
-To use an async request simply change `create_event` to `acreate_event`. The
-asynchronous method wont though an error though so it's best to start with the
-synchronous one.
-
 
 ## Documentation
 
