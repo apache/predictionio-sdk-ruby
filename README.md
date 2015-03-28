@@ -9,7 +9,7 @@ The Ruby SDK provides a convenient wrapper for the PredictionIO API.
 It allows you to quickly record your users' behavior
 and retrieve personalized predictions for them.
 
-# Installation
+## Installation
 
 Ruby 1.9.3+ required!
 
@@ -24,6 +24,79 @@ Or using [Bundler](http://bundler.io/) with:
 ```
 gem 'predictionio', '0.9.0'
 ```
+
+## Send an Event to PredictionIO
+
+Connect to the Event Server with:
+
+```ruby
+# Define environment variables.
+ENV['PIO_THREADS'] = 50 # For async requests.
+ENV['PIO_EVENT_SERVER_URL'] = 'http://localhost:7070'
+ENV['PIO_ACCESS_KEY'] = 'YOUR_ACCESS_KEY' # Find your access key with: `$ pio app list`.
+
+# Create PredictionIO event client.
+client = PredictionIO::EventClient.new(ENV['PIO_ACCESS_KEY'], ENV['PIO_EVENT_SERVER_URL'], ENV['PIO_THREADS'])
+```
+
+### Set a User
+
+```ruby
+user_id = User.find(...).id
+
+client.create_event(
+  '$set',
+  'user',
+  user_id
+)
+
+```
+
+### Set an Item
+
+```ruby
+item_id = Model.find(...).id
+
+client.create_event(
+  '$set',
+  'item',
+  item_id,
+  { 'properties' => { 'categories' => ['Category 1', 'Category 2'] } }
+)
+```
+
+### Record an Event
+
+```ruby
+client.create_event(
+  'rate',
+  'user',
+  user_id, {
+    'targetEntityType' => 'item',
+    'targetEntityId' => item_id,
+    'properties' => { 'rating' => 10 }
+  }
+)
+```
+
+### Query PredictionIO
+
+```ruby
+# Define environmental variables.
+ENV['PIO_ENGINE_URL'] = 'http://localhost:8000'
+
+# Create PredictionIO engine client.
+client = PredictionIO::EngineClient.new(ENV['PIO_ENGINE_URL'])
+
+# Get 5 recommendations for items similar to 10, 20, 30.
+response = client.send_query(items: [10, 20, 30], num: 5)
+```
+
+### Async
+
+To use an async request simply change `create_event` to `acreate_event`. The
+asynchronous method wont though an error though so it's best to start with the
+synchronous one.
 
 
 ## Documentation
