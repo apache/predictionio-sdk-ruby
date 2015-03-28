@@ -79,7 +79,9 @@ client.create_event(
 )
 ```
 
-### Query PredictionIO
+## Query PredictionIO
+
+Connect to the PredictionIO Engine with:
 
 ```ruby
 # Define environmental variables.
@@ -87,7 +89,11 @@ ENV['PIO_ENGINE_URL'] = 'http://localhost:8000'
 
 # Create PredictionIO engine client.
 client = PredictionIO::EngineClient.new(ENV['PIO_ENGINE_URL'])
+```
 
+### Query for a Recomendation
+
+```ruby
 # Get 5 recommendations for items similar to 10, 20, 30.
 response = client.send_query(items: [10, 20, 30], num: 5)
 ```
