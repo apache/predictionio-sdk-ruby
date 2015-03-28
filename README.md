@@ -25,7 +25,6 @@ Or using [Bundler](http://bundler.io/) with:
 gem 'predictionio', '0.9.0'
 ```
 
-# Support
 
 ## Documentation
 
@@ -39,7 +38,7 @@ View [Google Group](https://groups.google.com/group/predictionio-user)
 
 Use [JIRA](https://predictionio.atlassian.net) or [GitHub Issues](https://github.com/PredictionIO/PredictionIO-Ruby-SDK/issues).
 
-# Contributing
+## Contributing
 
 We follow the [git-flow]
 (http://nvie.com/posts/a-successful-git-branching-model/) model where all
