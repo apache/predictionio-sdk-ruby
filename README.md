@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK.svg?branch=develop)](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK)
 [![Code Climate](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK.png)](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK)
 [![Dependency Status](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK.svg)](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK)
+[![Gem Version](https://badge.fury.io/rb/predictionio.svg)](http://badge.fury.io/rb/predictionio)
 
 The Ruby SDK provides a convenient wrapper for the PredictionIO API.
 It allows you to quickly record your users' behavior
@@ -32,10 +33,8 @@ RDoc is [available online](http://docs.prediction.io/ruby/api/PredictionIO.html)
 
 ## Forum
 
-https://groups.google.com/group/predictionio-user
+View [Google Group](https://groups.google.com/group/predictionio-user)
 
 ## Issue Tracker
 
-https://predictionio.atlassian.net
-
-If you are unsure whether a behavior is an issue, bringing it up in the forum is highly encouraged.
+Use [JIRA](https://predictionio.atlassian.net) or [GitHub Issues](https://github.com/PredictionIO/PredictionIO-Ruby-SDK/issues).
