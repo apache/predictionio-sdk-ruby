@@ -25,11 +25,11 @@ Or using [Bundler](http://bundler.io/) with:
 gem 'predictionio', '0.9.0'
 ```
 
-# Documentation
+# Support
+
+## Documentation
 
 RDoc is [available online](http://docs.prediction.io/ruby/api/PredictionIO.html).
-
-# Support
 
 ## Forum
 
