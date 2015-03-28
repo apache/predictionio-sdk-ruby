@@ -38,3 +38,17 @@ View [Google Group](https://groups.google.com/group/predictionio-user)
 ## Issue Tracker
 
 Use [JIRA](https://predictionio.atlassian.net) or [GitHub Issues](https://github.com/PredictionIO/PredictionIO-Ruby-SDK/issues).
+
+# Contributing
+
+We follow the [git-flow]
+(http://nvie.com/posts/a-successful-git-branching-model/) model where all
+active development goes to the develop branch, and releases go to the master
+branch. Pull requests should be made against the develop branch and include
+relevant tests, if applicable. Please sign
+our [Contributor Agreement](http://prediction.io/cla) before submitting a pull request.
+
+## License
+
+[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). Please sign
+our [Contributor Agreement](http://prediction.io/cla) before submitting a pull request.
