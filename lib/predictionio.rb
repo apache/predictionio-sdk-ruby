@@ -1,3 +1,4 @@
+require 'json'
 require 'predictionio/async_request'
 require 'predictionio/async_response'
 require 'predictionio/connection'
