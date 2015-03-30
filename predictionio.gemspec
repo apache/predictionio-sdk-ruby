@@ -18,4 +18,5 @@ EOF
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 1.9.3'
   s.files = Dir[File.join('lib', '**', '**')]
+  s.add_runtime_dependency 'json', ["~> 1.8.0"]
 end
