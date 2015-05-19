@@ -9,6 +9,12 @@ The Ruby SDK provides a convenient wrapper for the PredictionIO API.
 It allows you to quickly record your users' behavior
 and retrieve personalized predictions for them.
 
+## Documentation
+
+Full Ruby SDK documentation can be found [here](http://docs.prediction.io/ruby/api/PredictionIO.html).
+
+Please see the [PredictionIO App Integration Overview](http://docs.prediction.io/appintegration/) to understand how the SDK can be used to integrate PredictionIO Event Server and Engine with your application.
+
 ## Installation
 
 Ruby 1.9.3+ required!
@@ -25,9 +31,11 @@ Or using [Bundler](http://bundler.io/) with:
 gem 'predictionio', '0.9.0'
 ```
 
-## Send an Event to PredictionIO
+## Sending Events to Event Server
 
-Connect to the Event Server with:
+Please refer to [Event Server documentation](https://docs.prediction.io/datacollection/) for event format and how the data can be collected from your app.
+
+### Instantiate Event Client and connect to PredictionIO Event Server
 
 ```ruby
 # Define environment variables.
@@ -39,11 +47,9 @@ ENV['PIO_ACCESS_KEY'] = 'YOUR_ACCESS_KEY' # Find your access key with: `$ pio ap
 client = PredictionIO::EventClient.new(ENV['PIO_ACCESS_KEY'], ENV['PIO_EVENT_SERVER_URL'], ENV['PIO_THREADS'])
 ```
 
-### Set a User
+### Create a `$set` user event and send it to Event Server
 
 ```ruby
-user_id = User.find(...).id
-
 client.create_event(
   '$set',
   'user',
@@ -52,11 +58,9 @@ client.create_event(
 
 ```
 
-### Set an Item
+### Create a `$set` item event and send it to Event Server
 
 ```ruby
-item_id = Model.find(...).id
-
 client.create_event(
   '$set',
   'item',
@@ -65,7 +69,7 @@ client.create_event(
 )
 ```
 
-### Record an Event
+### Create a user 'rate' item event and send it to Event Server
 
 ```ruby
 client.create_event(
@@ -79,15 +83,15 @@ client.create_event(
 )
 ```
 
-### Async
+### Asynchronous request
 
 To use an async request simply change `create_event` to `acreate_event`. The
 asynchronous method wont though an error though so it's best to start with the
 synchronous one.
 
-## Query PredictionIO
+## Query PredictionIO Engine
 
-Connect to the PredictionIO Engine with:
+### Connect to the Engine:
 
 ```ruby
 # Define environmental variables.
@@ -97,16 +101,12 @@ ENV['PIO_ENGINE_URL'] = 'http://localhost:8000'
 client = PredictionIO::EngineClient.new(ENV['PIO_ENGINE_URL'])
 ```
 
-### Get a Recomendation
+### Send a prediction query to the engine and get the predicted result:
 
 ```ruby
 # Get 5 recommendations for items similar to 10, 20, 30.
 response = client.send_query(items: [10, 20, 30], num: 5)
 ```
-
-## Documentation
-
-RDoc is [available online](http://docs.prediction.io/ruby/api/PredictionIO.html).
 
 ## Forum
 
