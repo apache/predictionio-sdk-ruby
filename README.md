@@ -85,9 +85,8 @@ client.create_event(
 
 ### Asynchronous request
 
-To use an async request simply change `create_event` to `acreate_event`. The
-asynchronous method wont though an error though so it's best to start with the
-synchronous one.
+To send an async request, simply use the `acreate_event` method instead of `create_event`. Be aware that the
+asynchronous method does not throw errors. It's best to use the synchronous method when first getting started.
 
 ## Query PredictionIO Engine
 
