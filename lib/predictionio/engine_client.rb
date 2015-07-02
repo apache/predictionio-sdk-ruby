@@ -4,10 +4,6 @@
 # Copyright:: Copyright (c) 2014 TappingStone, Inc.
 # License::   Apache License, Version 2.0
 
-require 'predictionio/async_request'
-require 'predictionio/async_response'
-require 'predictionio/connection'
-
 module PredictionIO
   # This class contains methods that interface with PredictionIO Engine
   # Instances that are trained from PredictionIO built-in Engines.
@@ -70,6 +66,30 @@ module PredictionIO
       end
     end
 
+    # :category: Asynchronous Methods
+    # Asynchronously sends a query and returns PredictionIO::AsyncResponse
+    # object immediately. The query should be a Ruby data structure that can be
+    # converted to a JSON object.
+    #
+    # Corresponding REST API method: POST /
+    #
+    # See also #send_query.
+    def asend_query(query)
+      @http.apost(PredictionIO::AsyncRequest.new('/queries.json', query.to_json))
+    end
+
+    # :category: Synchronous Methods
+    # Synchronously sends a query and block until predictions are received.
+    #
+    # See also #asend_query.
+    #
+    # call-seq:
+    # send_query(data)
+    # send_query(async_response)
+    def send_query(*args)
+      sync_events(:asend_query, *args)
+    end
+
     protected
 
     # Internal helper method. Do not call directly.
@@ -94,32 +114,6 @@ module PredictionIO
       else
         fail msg
       end
-    end
-
-    public
-
-    # :category: Asynchronous Methods
-    # Asynchronously sends a query and returns PredictionIO::AsyncResponse
-    # object immediately. The query should be a Ruby data structure that can be
-    # converted to a JSON object.
-    #
-    # Corresponding REST API method: POST /
-    #
-    # See also #send_query.
-    def asend_query(query)
-      @http.apost(PredictionIO::AsyncRequest.new('/queries.json', query.to_json))
-    end
-
-    # :category: Synchronous Methods
-    # Synchronously sends a query and block until predictions are received.
-    #
-    # See also #asend_query.
-    #
-    # call-seq:
-    # send_query(data)
-    # send_query(async_response)
-    def send_query(*args)
-      sync_events(:asend_query, *args)
     end
   end
 end

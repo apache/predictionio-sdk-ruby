@@ -4,9 +4,6 @@
 # Copyright:: Copyright (c) 2014 TappingStone, Inc.
 # License::   Apache License, Version 2.0
 
-require 'predictionio/async_request'
-require 'predictionio/async_response'
-require 'predictionio/connection'
 require 'date'
 
 module PredictionIO
@@ -103,26 +100,6 @@ module PredictionIO
         status
       end
     end
-
-    protected
-
-    # Internal helper method. Do not call directly.
-    def sync_events(sync_m, *args)
-      if args[0].is_a?(PredictionIO::AsyncResponse)
-        response = args[0].get
-      else
-        response = send(sync_m, *args).get
-      end
-      return response if response.is_a?(Net::HTTPCreated)
-      begin
-        msg = response.body
-      rescue
-        raise NotCreatedError, response
-      end
-      fail NotCreatedError, msg
-    end
-
-    public
 
     # :category: Asynchronous Methods
     # Asynchronously request to create an event and return a
@@ -335,6 +312,24 @@ module PredictionIO
     # record_user_action_on_item(async_response)
     def record_user_action_on_item(*args)
       sync_events(:arecord_user_action_on_item, *args)
+    end
+
+    protected
+
+    # Internal helper method. Do not call directly.
+    def sync_events(sync_m, *args)
+      if args[0].is_a?(PredictionIO::AsyncResponse)
+        response = args[0].get
+      else
+        response = send(sync_m, *args).get
+      end
+      return response if response.is_a?(Net::HTTPCreated)
+      begin
+        msg = response.body
+      rescue
+        raise NotCreatedError, response
+      end
+      fail NotCreatedError, msg
     end
   end
 end
