@@ -45,7 +45,7 @@ module PredictionIO
                       http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}")
                       http_req.set_form_data(request.params)
                     else
-                      http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}", initheader = { 'Content-Type' => 'application/json' })
+                      http_req = Net::HTTP::Post.new("#{uri.path}#{request.path}", initheader = { 'Content-Type' => 'application/json; charset=utf-8' })
                       http_req.body = request.params
                     end
                     begin
