@@ -28,7 +28,7 @@ gem install predictionio
 Or using [Bundler](http://bundler.io/) with:
 
 ```
-gem 'predictionio', '0.9.0'
+gem 'predictionio', '0.9.1'
 ```
 
 ## Sending Events to Event Server
