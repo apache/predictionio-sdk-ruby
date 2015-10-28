@@ -38,6 +38,8 @@ Please refer to [Event Server documentation](https://docs.prediction.io/datacoll
 ### Instantiate Event Client and connect to PredictionIO Event Server
 
 ```ruby
+require 'predictionio'
+
 # Define environment variables.
 ENV['PIO_THREADS'] = '50' # For async requests.
 ENV['PIO_EVENT_SERVER_URL'] = 'http://localhost:7070'
