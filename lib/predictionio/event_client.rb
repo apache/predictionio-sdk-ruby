@@ -5,6 +5,7 @@
 # License::   Apache License, Version 2.0
 
 require 'date'
+require "net/http"
 
 module PredictionIO
   # This class contains methods that interface with the PredictionIO Event
