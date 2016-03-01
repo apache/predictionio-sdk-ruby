@@ -61,6 +61,19 @@ RSpec.configure do |config|
                                  entityId: 'foobar'))
       .to_return(status: 201, body: JSON.generate(eventId: 'deadbeef07'))
 
+    stub_request(:get, 'http://fakeapi.com:7070/events/deadbeef08.json?accessKey=1?')
+      .to_return(status: 200, body: JSON.generate(eventId: 'deadbeef08'))
+
+    stub_request(:get, 'http://fakeapi.com:7070/events/doesNotExist.json?accessKey=1?')
+      .to_return(status: 404, body: JSON.generate(message: 'Not Found'))
+
+    stub_request(:get, 'http://fakeapi.com:7070/events.json?accessKey=1')
+      .to_return(status: 200, body: JSON.generate([{eventId: 'deadbeef09'}, {eventId: 'deadbeef10'}]))
+
+    stub_request(:get, 'http://fakeapi.com:7070/events.json?accessKey=1&limit=1')
+      .to_return(status: 200, body: JSON.generate([{eventId: 'deadbeef11'}]))
+
+
     # Engine Instance
     stub_request(:post, 'http://fakeapi.com:8000/queries.json')
       .with(body: { uid: 'foobar' })

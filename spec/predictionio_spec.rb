@@ -85,6 +85,18 @@ describe PredictionIO do
       response = event_client.delete_item('foobar')
       expect{ response }.to_not raise_error
     end
+
+    describe 'get_event' do
+      it 'returns events that exist' do
+        response = event_client.get_event('deadbeef08')
+        expect(response.code).to eq('200')
+      end
+
+      it 'returns nil if event does not exist' do
+        response = event_client.get_event('doesNotExist')
+        expect(response).to be_nil
+      end
+    end
   end
 
   describe 'Engine Client' do
