@@ -102,6 +102,30 @@ module PredictionIO
       end
     end
 
+    # :category: Synchronous Methods
+    # Synchronously get a single event by ID
+    #
+    # Corresponding REST API method: GET /events/:id.json
+    #
+    # See also #aget_event
+    def get_event(*args)
+      sync_events(:aget_event, *args)
+    rescue
+      nil
+    end
+
+    # :category: Asynchronous Methods
+    # Get a single event by ID
+    #
+    # Corresponding REST API method: GET /events/:id.json
+    #
+    # See also #get_event
+    def aget_event(event_id)
+      @http.aget(PredictionIO::AsyncRequest.new(
+        "/events/#{event_id}.json?accessKey=#{@access_key}"
+      ))
+    end
+
     # :category: Asynchronous Methods
     # Asynchronously request to create an event and return a
     # PredictionIO::AsyncResponse object immediately.
@@ -324,7 +348,7 @@ module PredictionIO
       else
         response = send(sync_m, *args).get
       end
-      return response if response.is_a?(Net::HTTPCreated)
+      return response if response.is_a?(Net::HTTPCreated) or response.is_a?(Net::HTTPOK)
       begin
         msg = response.body
       rescue
