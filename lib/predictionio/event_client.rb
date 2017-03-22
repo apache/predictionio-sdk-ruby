@@ -6,6 +6,7 @@
 
 require 'date'
 require "net/http"
+require 'active_support/core_ext/hash'
 
 module PredictionIO
   # This class contains methods that interface with the PredictionIO Event
@@ -110,14 +111,19 @@ module PredictionIO
     #
     # See also #create_event.
     def acreate_event(event, entity_type, entity_id, optional = {})
-      h = optional
+      h = optional.with_indifferent_access
       h.key?('eventTime') || h['eventTime'] = DateTime.now.to_s
       h['event'] = event
       h['entityType'] = entity_type
       h['entityId'] = entity_id
-      @http.apost(PredictionIO::AsyncRequest.new(
-        "/events.json?accessKey=#{@access_key}", h.to_json
-      ))
+      @http.apost(PredictionIO::AsyncRequest.new(event_path_with_main_params(h), h.except(:channel).to_json))
+    end
+
+    def event_path_with_main_params(options)
+      result = "/events.json?accessKey=#{@access_key}"
+      result += "&channel=#{options[:channel]}" if options[:channel]
+
+      result
     end
 
     # :category: Synchronous Methods

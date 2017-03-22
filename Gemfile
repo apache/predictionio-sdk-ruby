@@ -9,3 +9,5 @@ end
 group :doc do
  gem 'rdoc', '~> 4.0.0'
 end
+
+gem 'activesupport', '~> 4.2'
