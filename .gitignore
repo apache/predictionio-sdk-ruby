@@ -1,5 +1,7 @@
 /coverage
 /doc
+.rvmrc
+/.idea
 /pkg
 *.gem
 Gemfile.lock

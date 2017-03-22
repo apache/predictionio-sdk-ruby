@@ -8,6 +8,16 @@ WebMock.disable_net_connect!(allow_localhost: true)
 RSpec.configure do |config|
   config.before(:each) do
     # Events API
+    %w(
+      http://fakeapi.com:7070/events.json?accessKey=1&channel=test-channel
+    ).each do |url|
+      stub_request(:post, url)
+        .with(body: hash_including(event: '$set',
+                                   entityType: 'Session',
+                                   entityId: '42'))
+        .to_return(status: 201, body: JSON.generate(eventId: 'deadbeef00'))
+    end
+
     stub_request(:post, 'http://fakeapi.com:7070/events.json?accessKey=1')
       .with(body: hash_including(event: 'register',
                                  entityType: 'user',

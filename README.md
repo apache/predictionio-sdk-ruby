@@ -71,6 +71,19 @@ client.create_event(
 )
 ```
 
+### Create a $set` item event and send it to Event Server to specific channel 
+
+*NOTE:* channels are supported in PIO version >= 0.9.2 only. Channel must be created first.
+
+```ruby
+client.create_event(
+  '$set',
+  'item',
+  item_id,
+  { 'properties' => { 'categories' => ['Category 1', 'Category 2'], 'channel' => 'test-channel'} }
+)
+```
+
 ### Create a user 'rate' item event and send it to Event Server
 
 ```ruby
