@@ -120,6 +120,19 @@ module PredictionIO
       ))
     end
 
+    # :category: Asynchronous Methods
+    # Asynchronously request to create a batch of event and return a
+    # PredictionIO::AsyncResponse object immediately.
+    #
+    # Corresponding REST API method: POST /batch/events.json
+    #
+    # See also #acreate_event.
+    def acreate_batch_event(payload)
+      @http.apost(PredictionIO::AsyncRequest.new(
+        "/batch/events.json?accessKey=#{@access_key}", payload.to_json
+      ))
+    end
+
     # :category: Synchronous Methods
     # Synchronously request to create an event and block until a response is
     # received.
@@ -131,6 +144,19 @@ module PredictionIO
     # create_event(async_response)
     def create_event(*args)
       sync_events(:acreate_event, *args)
+    end
+
+    # :category: Synchronous Methods
+    # Synchronously request to create an event and block until a response is
+    # received.
+    #
+    # See also #acreate_event.
+    #
+    # call-seq:
+    # create_batch_event(payload)
+    # create_batch_event(async_response)
+    def create_batch_event(payload)
+      sync_events(:acreate_batch_event, payload)
     end
 
     # :category: Asynchronous Methods
