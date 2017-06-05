@@ -1,13 +1,63 @@
 require 'predictionio'
 require 'spec_helper'
 
-event_client = PredictionIO::EventClient.new(1, 'http://fakeapi.com:7070', 10)
-engine_client = PredictionIO::EngineClient.new('http://fakeapi.com:8000', 10)
-
 describe PredictionIO do
+  let(:access_key) { 1 }
+  let(:event_client) { PredictionIO::EventClient.new(access_key, 'http://fakeapi.com:7070', 10) }
+  let(:engine_client) { PredictionIO::EngineClient.new('http://fakeapi.com:8000', 10) }
+
   describe 'Events API' do
     it 'create_event should create an event' do
       response = event_client.create_event('register', 'user', 'foobar')
+      expect(response.code).to eq('201')
+    end
+
+    context 'with http stub (for channel test)' do
+      before(:each) do
+        success_response = Net::HTTPCreated.new('HTTP/1.1', '201', 'Created')
+        success_response.body = JSON.generate(eventId: 'deadbeef00')
+        expect_any_instance_of(PredictionIO::Connection).to receive(:apost).and_return(double(get: success_response))
+      end
+
+      it 'create_event should have channel option (symbol)' do
+        expect(PredictionIO::AsyncRequest).
+          to receive(:new).with("/events.json?accessKey=#{access_key}&channel=test-channel",
+                                {
+                                  "eventTime" => "2017-03-22T12:26:35+03:00", "event" => "$set",
+                                  "entityType" => "Session", "entityId" => "42"
+                                }.to_json)
+        event_client.create_event('$set', 'Session', '42',
+                                  {channel: 'test-channel', 'eventTime' => "2017-03-22T12:26:35+03:00"})
+      end
+
+      it 'create_event should process channel option (string)' do
+        expect(PredictionIO::AsyncRequest).
+          to receive(:new).with("/events.json?accessKey=#{access_key}&channel=test-channel",
+                                {
+                                  "eventTime" => "2017-03-22T12:26:35+03:00", "event" => "$set",
+                                  "entityType" => "Session", "entityId" => "42"
+                                }.to_json)
+        response = event_client.create_event('$set', 'Session', '42',
+                                             { 'channel' => 'test-channel', 'eventTime' => "2017-03-22T12:26:35+03:00" })
+        expect(response.code).to eq('201')
+      end
+
+      it 'create_event should work without channel option' do
+        expect(PredictionIO::AsyncRequest).
+          to receive(:new).with("/events.json?accessKey=#{access_key}",
+                                {
+                                  "eventTime" => "2017-03-22T12:26:35+03:00", "event" => "$set",
+                                  "entityType" => "Session", "entityId" => "42"
+                                }.to_json)
+        response = event_client.create_event('$set', 'Session', '42',
+                                             { 'eventTime' => "2017-03-22T12:26:35+03:00" })
+        expect(response.code).to eq('201')
+      end
+    end
+
+    it 'create_event should post real request with channel option' do
+      response = event_client.create_event('$set', 'Session', '42',
+                                           { 'channel' => 'test-channel', 'eventTime' => "2017-03-22T12:26:35+03:00" })
       expect(response.code).to eq('201')
     end
 
