@@ -1,6 +1,6 @@
 # PredictionIO Ruby SDK
 
-[![Build Status](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK.svg?branch=develop)](https://travis-ci.org/PredictionIO/PredictionIO-Ruby-SDK)
+[![Build Status](https://api.travis-ci.org/apache/incubator-predictionio-sdk-ruby.svg?branch=develop)](https://github.com/apache/incubator-predictionio-sdk-ruby)
 [![Code Climate](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK.png)](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK)
 [![Dependency Status](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK.svg)](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK)
 [![Gem Version](https://badge.fury.io/rb/predictionio.svg)](http://badge.fury.io/rb/predictionio)
@@ -11,15 +11,19 @@ and retrieve personalized predictions for them.
 
 ## Documentation
 
-Full Ruby SDK documentation can be found [here](http://docs.prediction.io/ruby/api/PredictionIO.html).
+Full Ruby SDK documentation can be found [here](http://www.rubydoc.info/github/apache/incubator-predictionio-sdk-ruby).
 
-Please see the [PredictionIO App Integration Overview](http://docs.prediction.io/appintegration/) to understand how the SDK can be used to integrate PredictionIO Event Server and Engine with your application.
+Please see the [PredictionIO App Integration
+Overview](http://predictionio.incubator.apache.org/appintegration/) to
+understand how the SDK can be used to integrate PredictionIO Event Server and
+Engine with your application.
 
 ## Installation
 
-Ruby 1.9.3+ required!
+Ruby 2+ required!
 
-The module is published to [RubyGems](http://rubygems.org/gems/predictionio) and can be installed directly by:
+The module is published to [RubyGems](http://rubygems.org/gems/predictionio) and
+can be installed directly by:
 
 ```sh
 gem install predictionio
@@ -33,7 +37,9 @@ gem 'predictionio', '0.9.6'
 
 ## Sending Events to Event Server
 
-Please refer to [Event Server documentation](https://docs.prediction.io/datacollection/) for event format and how the data can be collected from your app.
+Please refer to [Event Server
+documentation](http://predictionio.incubator.apache.org/datacollection/) for
+event format and how the data can be collected from your app.
 
 ### Instantiate Event Client and connect to PredictionIO Event Server
 
@@ -71,7 +77,7 @@ client.create_event(
 )
 ```
 
-### Create a $set` item event and send it to Event Server to specific channel 
+### Create a $set` item event and send it to Event Server to specific channel
 
 *NOTE:* channels are supported in PIO version >= 0.9.2 only. Channel must be created first.
 
@@ -100,8 +106,9 @@ client.create_event(
 
 ### Asynchronous request
 
-To send an async request, simply use the `acreate_event` method instead of `create_event`. Be aware that the
-asynchronous method does not throw errors. It's best to use the synchronous method when first getting started.
+To send an async request, simply use the `acreate_event` method instead of
+`create_event`. Be aware that the asynchronous method does not throw errors.
+It's best to use the synchronous method when first getting started.
 
 ## Query PredictionIO Engine
 
@@ -122,22 +129,20 @@ client = PredictionIO::EngineClient.new(ENV['PIO_ENGINE_URL'])
 response = client.send_query(items: [10, 20, 30], num: 5)
 ```
 
-## Forum
+## Mailing List
 
-View [Google Group](https://groups.google.com/group/predictionio-user)
+Please use the Apache mailing lists. Subscription instructions are
+[here](http://predictionio.incubator.apache.org/support/).
 
 ## Issue Tracker
 
-Use [JIRA](https://predictionio.atlassian.net) or [GitHub Issues](https://github.com/PredictionIO/PredictionIO-Ruby-SDK/issues).
+Use [the Apache JIRA](https://issues.apache.org/jira/browse/PIO), and file any
+issues with a `ruby-sdk` label.
 
 ## Contributing
 
-We follow the [git-flow]
-(http://nvie.com/posts/a-successful-git-branching-model/) model where all
-active development goes to the develop branch, and releases go to the master
-branch. Pull requests should be made against the develop branch and include
-relevant tests, if applicable. Please sign
-our [Contributor Agreement](http://prediction.io/cla) before submitting a pull request.
+Please follow these
+[instructions](http://predictionio.incubator.apache.org/community/contribute-code/).
 
 ## License
 
