@@ -112,7 +112,7 @@ module PredictionIO
     # See also #create_event.
     def acreate_event(event, entity_type, entity_id, optional = {})
       h = optional.with_indifferent_access
-      h.key?('eventTime') || h['eventTime'] = DateTime.now.to_s
+      h.key?('eventTime') || h['eventTime'] = DateTime.now.iso8601
       h['event'] = event
       h['entityType'] = entity_type
       h['entityId'] = entity_id
