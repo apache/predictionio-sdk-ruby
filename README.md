@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Apache PredictionIO (incubating) Ruby SDK
+# Apache PredictionIO Ruby SDK
 
 [![Build Status](https://api.travis-ci.org/apache/incubator-predictionio-sdk-ruby.svg?branch=develop)](https://github.com/apache/incubator-predictionio-sdk-ruby)
 [![Code Climate](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK.png)](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK)
@@ -31,7 +31,7 @@ personalized predictions for them.
 Full Ruby SDK documentation can be found [here](http://www.rubydoc.info/github/apache/incubator-predictionio-sdk-ruby).
 
 Please see the [PredictionIO App Integration
-Overview](http://predictionio.incubator.apache.org/appintegration/) to
+Overview](http://predictionio.apache.org/appintegration/) to
 understand how the SDK can be used to integrate PredictionIO Event Server and
 Engine with your application.
 
@@ -55,7 +55,7 @@ gem 'predictionio', '0.9.6'
 ## Sending Events to Event Server
 
 Please refer to [Event Server
-documentation](http://predictionio.incubator.apache.org/datacollection/) for
+documentation](http://predictionio.apache.org/datacollection/) for
 event format and how the data can be collected from your app.
 
 ### Instantiate Event Client and connect to PredictionIO Event Server
@@ -149,7 +149,7 @@ response = client.send_query(items: [10, 20, 30], num: 5)
 ## Mailing List
 
 Please use the Apache mailing lists. Subscription instructions are
-[here](http://predictionio.incubator.apache.org/support/).
+[here](http://predictionio.apache.org/support/).
 
 ## Issue Tracker
 
@@ -159,7 +159,7 @@ issues under the `Ruby SDK` component.
 ## Contributing
 
 Please follow these
-[instructions](http://predictionio.incubator.apache.org/community/contribute-code/).
+[instructions](http://predictionio.apache.org/community/contribute-code/).
 
 ## License
 
