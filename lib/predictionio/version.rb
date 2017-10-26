@@ -14,5 +14,5 @@
 # limitations under the License.
 
 module PredictionIO
-  VERSION = '0.9.7'
+  VERSION = '0.12.0'
 end
