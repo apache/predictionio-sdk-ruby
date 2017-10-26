@@ -3,18 +3,19 @@ require 'predictionio/version'
 
 Gem::Specification.new do |s|
   s.name = 'predictionio'
-  s.summary = 'PredictionIO Ruby SDK'
+  s.summary = 'Apache PredictionIO Ruby SDK'
   s.description = <<-EOF
-PredictionIO is an open source machine learning server for developers and data
-scientists to create predictive engines for production environments. This gem
-provides convenient access to the PredictionIO API for Ruby programmers so that
-you can focus on application logic.
+Apache PredictionIO is an open source machine learning server for
+developers and data scientists to create predictive engines for
+production environments. This gem provides convenient access to the
+Apache PredictionIO API for Ruby programmers so that you can focus on
+application logic.
 EOF
   s.version = PredictionIO::VERSION
   s.licenses = ['Apache-2.0']
-  s.author = 'The PredictionIO Team'
-  s.email = 'support@prediction.io'
-  s.homepage = 'http://prediction.io/'
+  s.author = 'Apache PredictionIO'
+  s.email = 'user@predictionio.apache.org'
+  s.homepage = 'http://predictionio.apache.org'
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.0'
   s.files = Dir[File.join('lib', '**', '**')]
