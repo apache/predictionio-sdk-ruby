@@ -17,9 +17,7 @@ limitations under the License.
 
 # Apache PredictionIO Ruby SDK
 
-[![Build Status](https://api.travis-ci.org/apache/incubator-predictionio-sdk-ruby.svg?branch=develop)](https://github.com/apache/incubator-predictionio-sdk-ruby)
-[![Code Climate](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK.png)](https://codeclimate.com/github/PredictionIO/PredictionIO-Ruby-SDK)
-[![Dependency Status](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK.svg)](https://gemnasium.com/PredictionIO/PredictionIO-Ruby-SDK)
+[![Build Status](https://api.travis-ci.org/apache/predictionio-sdk-ruby.svg?branch=develop)](https://github.com/apache/predictionio-sdk-ruby)
 [![Gem Version](https://badge.fury.io/rb/predictionio.svg)](http://badge.fury.io/rb/predictionio)
 
 The Ruby SDK provides a convenient wrapper for PredictionIO Event Server API and
@@ -49,7 +47,7 @@ gem install predictionio
 Or using [Bundler](http://bundler.io/) with:
 
 ```
-gem 'predictionio', '0.12.0'
+gem 'predictionio', '0.12.1'
 ```
 
 ## Sending Events to Event Server
